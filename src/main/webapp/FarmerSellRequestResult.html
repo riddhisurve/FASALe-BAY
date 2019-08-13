@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.4.1.js">
+	
+</script>
+<script>
+	$(function() {	
+		$.ajax({
+			url : 'listAll.lti',
+			method : 'POST',
+			contentType : 'application/json',
+			success : function(response) {
+				//$("#FSRdivsample").append(response);
+				for(var index in response)
+					{
+					//$("#FSRdiv").html($("<h3>Crop Sell ID : ").text(response[index].sellRequestId));
+						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+response[index].sellRequestId));
+						$("#FSRdiv").append($("<h3>").text("Crop Name : "+response[index].cropName));
+						$("#FSRdiv").append($("<h3>").text("Crop Type : "+response[index].cropType));
+						$("#FSRdiv").append($("<h3>").text("Fertilizer Type : "+response[index].fertilizerType));
+						$("#FSRdiv").append($("<h3>").text("Soil PH Certificate : "+response[index].soilPhCertificate));
+						$("#FSRdiv").append($("<h3>").text("Status : "+response[index].status));
+						$("#FSRdiv").append($("<h3>").text("Date and Time of request upload : "+response[index].dateTime));
+						$("#FSRdiv").append($("<h3>").text("Crop available on website for : "+response[index].duration));
+						$("#FSRdiv").append($("<h3>").text("Base Price : "+response[index].basePrice));
+					}
+			}
+		})
+	})
+</script>
+</head>
+<body>
+<form id="FSRForm-result">
+</form>
+<div id="FSRdiv"></div>
+<div id="FSRdivsample"></div>
+</body>
+</html>

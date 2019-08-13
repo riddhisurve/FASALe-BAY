@@ -1,0 +1,96 @@
+#main{
+	width : 30%;
+	margin:0 auto;
+	font-family: "Times New Roman", Times, serif;
+	padding:15px;
+	margin-top:150px;
+	border:1px solid black;
+}
+
+*{
+	box-sizing: border-box;
+    margin: 0;
+}
+
+#i1{
+	padding: 8px 10px 10px 0;
+    width: 100%;
+    color: #000;
+    font-size: inherit;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#log{
+	padding:10px;
+	background: green;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border: none;
+    color: #fff;
+    width:100%;
+}
+
+#log:hover{
+	transition: box-SHADOW
+}
+
+#aid{
+	right: 0;
+	position: absolute;
+    display: inline-block;
+    bottom: 10px;
+	font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    color: #2874f0;
+    right: 0;
+
+    
+}
+div{
+	margin:10px;
+}
+
+#otp{
+	
+	padding:10px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border: none;
+    color: #212121;
+    font-size: 13px;
+    font-weight: 500;
+    width:100%;
+        outline: none;
+
+}
+
+.user-input-wrp {
+	position: relative;
+	width: 100%;
+}
+.user-input-wrp .inputText{
+	width: 100%;
+	outline: none;
+	border:none;
+	border-bottom: 1px solid #777;
+ 	box-shadow: none !important;
+}
+.user-input-wrp .inputText:focus{
+	border-color: blue;
+	border-width: medium medium 2px;
+}
+.user-input-wrp .floating-label {
+	position: absolute;
+	pointer-events: none;
+	top: 18px;
+	left: 10px;
+	transition: 0.2s ease all;
+}
+.user-input-wrp input:focus ~ .floating-label,
+.user-input-wrp input:not(:focus):valid ~ .floating-label{
+	top: 0px;
+	left: 10px;
+	font-size: 13px;
+	opacity: 1;
+}

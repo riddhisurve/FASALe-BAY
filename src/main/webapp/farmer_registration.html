@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js">
+	
+</script>
+<script>
+	$(function() {
+		$("#farmer_form").submit(function(evt) {
+			evt.preventDefault();
+			var obj = {
+
+					name : $('#name').val(),
+					contactNumber : $('#contact_number').val(),
+				    email : $('#email').val(),
+				    password : $('#password').val(),
+				    address1:$('#address1').val(),
+				    address2:$('#address2').val(),
+				    city:$('#city').val(),
+				    state:$('#state').val(),
+				    pincode:$('#pincode').val(),
+				    accountNumber:$('#accno').val(),
+				    ifsc:$('#ifsc').val(),
+				    aadharcard:$('#adhar').val(),
+				    pancard:$('#pan').val(),
+				    certificate:$('#cert').val(),
+				    landArea:$('#land_area').val(),
+				    landAddress:$('#land_address').val(),
+				    landPin:$('#land_pincode').val()
+			}
+			$.ajax({
+				url : 'addFarmer.lti',
+				method : 'POST',
+				data : JSON.stringify(obj),
+				contentType : 'application/json',
+				success : function(response) {
+					alert(JSON.stringify(response)),
+					window.location.href = "farmer_registration.html";
+				}
+			})
+		})
+	})
+</script>
+
+</head>
+<body>
+	FARMER REGISTRTION FORM
+	<form id="farmer_form">
+		<p>Personal details</p>
+
+		Enter name :<input type="text" id="name" /><br /> 
+		Enter Contact	Number : <input type="number" id="contact_number" /><br /> 
+		Enter Email : <input type="email" id="email" /><br /> 
+		Enter Password : <input type="password" id="password" /><br /> 
+		Confirm Password : <input type="password" id="cpassword" /><br />
+		<p>Address Details</p>
+		<br /> Enter Address1: <input type="text" id="address1"	placeholder="address1" /><br /> 
+			Enter Address2: <input type="text"	id="address2" placeholder="address2" /><br /> 
+			Enter city: <input 	type="text" id="city" /><br /> 
+			Enter state: <input type="text"	id="state" /><br /> 
+			Enter pincode: <input type="number"	id="pincode" /><br />
+		<p>Land Details</p>
+		<br /> Enter area : <input type="number" id="land_area" /><br />
+		Enter Address: <input type="text" id="land_address" /><br /> 
+		Enter pincode: <input type="number" id="land_pincode" /><br />
+
+		<p>Account details</p>
+		<br /> Enter Account number:<input type="number" id="accno" /><br />
+		Enter IFSC code: <input type="text" id="ifsc" /><br />
+		<p>DOcuments upload</p>
+		Enter adh code: <input type="text" id="adhar" /><br /> 
+		Enter pancode: <input type="text" id="pan" /><br /> 
+		Enter cert code: <input	type="text" id="cert" /><br />
+		
+		<br /> <input type="submit" value="REGISTER" />
+	</form>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Page</title>
+<link rel="stylesheet" type="text/css" href="logincss.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+$(function() {
+	$("#loginFrm").submit(function(evt) {
+		evt.preventDefault();
+		var obj={
+				email:$("#email").val(),
+				password:$("#password").val(),
+				 role: $('.role').val()
+				}
+		
+		$.ajax({
+			url : 'login.lti',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(response) {
+				if(response=="farmer")
+					{
+					window.location.href="farmerHome.html"
+					}
+				else if(response=="admin")
+				{
+				window.location.href="adminHome.html"
+				}
+				else if(response=="bidder")
+				{
+				window.location.href="bidderHome.html"
+				}
+				else{
+					$("#error").html("Invalid Credentials")
+				}
+			}
+		})
+		
+	})
+});
+
+
+
+</script>
+</head>
+<body>
+<div id="main">
+<form id="loginFrm">
+	<div class="user-input-wrp">
+	<br/>
+	<input type="text" class="inputText" id="email" required/>
+	<span class="floating-label">Enter User Id</span>
+	</div>
+
+	<div class="user-input-wrp">
+	<br/>
+	<input type="text" class="inputText" id="password" required/>
+	<span class="floating-label">Enter Password</span>
+	</div>
+	
+	<div class="user-input-wrp">
+	<br/>
+	<select  class="role">
+			<option value="admin">Admin</option>
+			<option value="farmer">Farmer</option>
+			<option value="bidder">Bidder</option>
+	</select>
+	</div>
+	
+
+	<div>
+	<input type="submit" value="Login" id="submit">
+	</div> 
+	<a href="signup">New user ? Register </a>
+</form>
+<div id="error"></div>
+</div>
+
+
+</body>
+</html>
