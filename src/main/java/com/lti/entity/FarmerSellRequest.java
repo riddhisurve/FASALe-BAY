@@ -35,11 +35,22 @@ public class FarmerSellRequest {
 	private int quantity;
 	@Column(name="soil_ph_certificate")
 	private String soilPhCertificate;
-	private String status;
+	private int status;
 	@Column(name="date_time")
 	private LocalDateTime dateTime=LocalDateTime.now();
 	
+	@Column(name="end_date_time")
+	private LocalDateTime endDateTime;
 	
+	
+	public LocalDateTime getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(LocalDateTime endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
 	private int duration;
 	
 	@Column(name="base_price")
@@ -103,11 +114,11 @@ public class FarmerSellRequest {
 		this.quantity = quantity;
 	}
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 

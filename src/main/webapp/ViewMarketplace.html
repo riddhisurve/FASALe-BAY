@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function(){
+		$.ajax({
+			url :"approvedCropDetails.lti",
+			method : 'POST',
+			dataType : 'JSON',
+			contentType : 'application/json',
+			success : function(response) {
+				for(var crop of response){
+				$("#details").append($("<h4>").text("Crop Type : "+crop.cropType));
+				$("#details").append($("<h4>").text("Crop Name : "+crop.cropName));
+				$("#details").append($("<h4>").text("Base Price : "+crop.basePrice));
+				//$("#details").append($("<h4>").text(""+crop.fertilizerType));
+				$("#details").append($("<hr>"));
+				//alert(JSON.stringify(response));
+				}
+			}
+		})
+		
+	})
+
+</script>
+</head>
+<body>
+
+	<div id="details"></div>
+
+</body>
+</html>

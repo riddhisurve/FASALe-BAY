@@ -1,5 +1,6 @@
 package com.lti.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -55,6 +56,7 @@ public class GenericDao {
 
 		}
 	}
+
 	public String loginValidationBidder(String email, String password) {
 		String query = "select b from BidderDetails b where b.email=:em and b.password=:pwd";
 		Query q = entityManager.createQuery(query);
@@ -72,6 +74,7 @@ public class GenericDao {
 			return "false";
 		}
 	}
+
 	public String loginValidationAdmin(String email, String password) {
 		String query = "select a from Admin a where a.email=:em and a.password=:pwd";
 		Query q = entityManager.createQuery(query);
@@ -90,8 +93,17 @@ public class GenericDao {
 
 		}
 	}
+
 	public <E> List<E> fetchDataFSR(Class<E> clazz) {
 		String q = "select obj from " + clazz.getName() + " as obj where sellRequestId=121";
 		return entityManager.createQuery(q).getResultList();
 	}
+
+	public <E> List<E> fetchAllSellingCrops(Class<E> clazz) {
+		LocalDateTime currentTime = LocalDateTime.now();
+		System.out.println(currentTime);
+		String q = "select obj from " + clazz.getName() + " as obj where status=1 and sysdate()<endDateTime";
+		return entityManager.createQuery(q).getResultList();
+	}
+
 }
