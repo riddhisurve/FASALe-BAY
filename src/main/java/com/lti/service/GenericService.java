@@ -1,5 +1,6 @@
 package com.lti.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +55,29 @@ public class GenericService {
 	public List<FarmerSellRequest> listAll(){
 		return dao.fetchDataFSR(FarmerSellRequest.class);
 	}
+	
+	public List<FarmerSellRequest> listAll1() {
+		return dao.fetchAll(FarmerSellRequest.class);
+	}
+	
+	@Transactional
+	public int requestApproved(int requestId) {
+		
+		FarmerSellRequest insertFarmerIdFSR = dao.fetchById(FarmerSellRequest.class, requestId);
+		insertFarmerIdFSR.setStatus(1);
+		insertFarmerIdFSR.setDateTime(LocalDateTime.now());
+		
+		LocalDateTime startDateTime = insertFarmerIdFSR.getDateTime();
+		int duration = insertFarmerIdFSR.getDuration();
+		LocalDateTime endDateTime = startDateTime.plusDays(duration);
+		insertFarmerIdFSR.setEndDateTime(endDateTime);
+		
+		dao.save(insertFarmerIdFSR);
+		return requestId;
+	}
+	
+	public List<FarmerSellRequest> approvedCropDetails() {
+		return dao.fetchAllSellingCrops(FarmerSellRequest.class);
+	}
+	
 }
