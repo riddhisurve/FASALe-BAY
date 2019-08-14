@@ -35,6 +35,18 @@
 						success : function(response) {
 							//redirectToURL('FarmerSellRequestResult.html'+src)
 							window.location.href = "FarmerSellRequestResult.html";
+							
+							/*var fsrId = response.req;		// Trying to pass farmerID to FarmerSellRequestResult.html page
+							$.ajax({
+					            type : "post",
+					            url : "FarmerSellRequestResult.html",
+					            data :  "id="+fsrId,  //you can pass value like this.
+					            cache : false,
+					            success : function(html) {
+					                //$('#msg').html(html);
+					            	window.location.href = "FarmerSellRequestResult.html";
+					            }
+					         });*/
 						}
 					});
 				}
@@ -83,5 +95,7 @@
 			<div>
 				<input type="submit" value="PLACE REQUEST" />
 			</div>
+<div id ="msg"></div>
+			
 </body>
 </html>

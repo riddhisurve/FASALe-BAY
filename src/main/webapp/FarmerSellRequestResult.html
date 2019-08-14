@@ -13,17 +13,24 @@
 			method : 'POST',
 			contentType : 'application/json',
 			success : function(response) {
-				//$("#FSRdivsample").append(response);
+				alert(JSON.stringify(response));
 				for(var index in response)
 					{
-					//$("#FSRdiv").html($("<h3>Crop Sell ID : ").text(response[index].sellRequestId));
+						if(response[index].status==0)
+							{
+							var status = "Unapproved by Admin";
+							}
+						else if(response[index].status==1)
+							{
+							var status = "Approved by Admin";
+							}
 						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+response[index].sellRequestId));
 						$("#FSRdiv").append($("<h3>").text("Crop Name : "+response[index].cropName));
 						$("#FSRdiv").append($("<h3>").text("Crop Type : "+response[index].cropType));
 						$("#FSRdiv").append($("<h3>").text("Fertilizer Type : "+response[index].fertilizerType));
 						$("#FSRdiv").append($("<h3>").text("Soil PH Certificate : "+response[index].soilPhCertificate));
-						$("#FSRdiv").append($("<h3>").text("Status : "+response[index].status));
-						$("#FSRdiv").append($("<h3>").text("Date and Time of request upload : "+response[index].dateTime));
+						$("#FSRdiv").append($("<h3>").text("Status : "+status));
+						$("#FSRdiv").append($("<h3>").text("Date and Time of request upload : "+response[index].dateTime.dayOfMonth+"-"+response[index].dateTime.monthValue+"-"+response[index].dateTime.year+" "+response[index].dateTime.hour+":"+response[index].dateTime.minute+":"+response[index].dateTime.second));
 						$("#FSRdiv").append($("<h3>").text("Crop available on website for : "+response[index].duration));
 						$("#FSRdiv").append($("<h3>").text("Base Price : "+response[index].basePrice));
 					}

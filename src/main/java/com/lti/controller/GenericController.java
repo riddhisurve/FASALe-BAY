@@ -75,13 +75,13 @@ public class GenericController {
 	}
 
 	@PostMapping("/setFarmerIDToFSR.lti")
-	public void setFarmerIDToFSR(@RequestBody int farmerId) {
+	public int setFarmerIDToFSR(@RequestBody int farmerId) {
 
 		int req = getRequestId();
 		System.out.println("req" + req);
 		System.out.println("farmerID" + farmerId);
 		genericService.assignFarmerIdToFSR(req, farmerId);
-
+		return req;
 	}
 	
 	@PostMapping("/listAll.lti")
