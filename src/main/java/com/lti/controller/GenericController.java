@@ -53,14 +53,6 @@ public class GenericController {
 	}
 	int requestId;
 
-	public int getRequestId() {
-		return requestId;
-	}
-
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
-	}
-	
 	@PostMapping("/addFarmerSellRequest.lti")
 	public Status addFarmerSellRequest(@RequestBody FarmerSellRequest fsr) {
 
@@ -74,7 +66,13 @@ public class GenericController {
 		return status;
 	}
 
-	
+	public int getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(int requestId) {
+		this.requestId = requestId;
+	}
 
 	@PostMapping("/setFarmerIDToFSR.lti")
 	public int setFarmerIDToFSR(@RequestBody int farmerId) {
@@ -83,36 +81,11 @@ public class GenericController {
 		System.out.println("req" + req);
 		System.out.println("farmerID" + farmerId);
 		genericService.assignFarmerIdToFSR(req, farmerId);
-<<<<<<< HEAD
 		return req;
-=======
->>>>>>> branch 'master' of https://github.com/ChetnaBachhav/SchemesForFarmers.git
 	}
 	
-    @PostMapping("/listAll.lti")
+	@PostMapping("/listAll.lti")
 	public List<FarmerSellRequest> listAll() {
 		return genericService.listAll();
 		}
-	
-	@PostMapping("/fetchAllFarmerSellRequest.lti")
-	public List<FarmerSellRequest> fetchAll() {
-		List<FarmerSellRequest> list=genericService.listAll1();
-        for(FarmerSellRequest x:list)System.out.println(x.getCropType());
-		return list;
-	}
-	
-	@PostMapping("/requestApproved.lti")
-	public Status requestApproved(@RequestBody int requestId) {
-		genericService.requestApproved(requestId);
-		Status status = new Status();
-		status.setMessage("Request added!");
-		status.setGeneratedId(requestId);
-		return status;
-	}
-	
-	@PostMapping("/approvedCropDetails.lti")
-	public List<FarmerSellRequest> approvedCropDetails() {
-		return genericService.approvedCropDetails();
-	}
-	
 }
