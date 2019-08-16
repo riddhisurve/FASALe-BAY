@@ -12,19 +12,18 @@ $(function(){
 			contentType : 'application/json',
 			success : function(response) {
 		//		alert(JSON.stringify(response));
-		
 				for(var crop of response){
 				$("#crop").append($("<h6>").text(crop.cropType));
 				$("#crop").append($("<h6>").text(crop.cropName));
 				$("#crop").append($("<h6>").text(crop.fertilizerType));
-				$("#crop").append($("<h6>").text(crop.fertilizerType));
+				$("#crop").append($("<h6>").text(crop.farmerDetails.name));
+
 				var btn = $("<button />");
 				$("#crop").append(btn);
 				btn.attr("class", "approve-btn");
 				btn.attr("data-cropid", crop.sellRequestId);
 				btn.text("Approve");
 
-				//alert(JSON.stringify(response));
 				}
 			}
 		})
@@ -37,6 +36,7 @@ $(function(){
 			contentType : 'application/json',
 			success : function(response) {
 				alert("done");
+				window.location.reload();
 			}
 		})
 	})

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.lti.entity.Admin;
 import com.lti.entity.BidderDetails;
 import com.lti.entity.FarmerDetails;
+import com.lti.entity.FarmerSellRequest;
 
 //@Component
 @Repository // recommended when writing Dao class
@@ -37,7 +38,7 @@ public class GenericDao {
 		return entityManager.createQuery(q).getResultList();
 	}
 
-	public String loginValidationFarmer(String email, String password) {
+	public FarmerDetails loginValidationFarmer(String email, String password) {
 
 		String query = "select f from FarmerDetails f where f.email=:em and f.password=:pwd";
 		Query q = entityManager.createQuery(query);
@@ -48,16 +49,16 @@ public class GenericDao {
 		try {
 
 			FarmerDetails f = (FarmerDetails) q.getSingleResult();
-
-			return "farmer";
+			System.out.println(f);
+			return f;
 
 		} catch (Exception e) {
-			return "false";
+			return null;
 
 		}
 	}
 
-	public String loginValidationBidder(String email, String password) {
+	public BidderDetails loginValidationBidder(String email, String password) {
 		String query = "select b from BidderDetails b where b.email=:em and b.password=:pwd";
 		Query q = entityManager.createQuery(query);
 
@@ -67,15 +68,15 @@ public class GenericDao {
 		try {
 
 			BidderDetails f = (BidderDetails) q.getSingleResult();
-
-			return "bidder";
+			System.out.println(f);
+			return f;
 
 		} catch (Exception e) {
-			return "false";
+			return null;
 		}
 	}
 
-	public String loginValidationAdmin(String email, String password) {
+	public Admin loginValidationAdmin(String email, String password) {
 		String query = "select a from Admin a where a.email=:em and a.password=:pwd";
 		Query q = entityManager.createQuery(query);
 
@@ -85,11 +86,11 @@ public class GenericDao {
 		try {
 
 			Admin a = (Admin) q.getSingleResult();
-
-			return "admin";
+			System.out.println(a);
+			return a;
 
 		} catch (Exception e) {
-			return "false";
+			return null;
 
 		}
 	}
@@ -99,11 +100,54 @@ public class GenericDao {
 		return entityManager.createQuery(q).getResultList();
 	}
 
-	public <E> List<E> fetchAllSellingCrops(Class<E> clazz) {
+	/*public <E> List<E> fetchAllSellingCrops(Class<E> clazz) {
 		LocalDateTime currentTime = LocalDateTime.now();
 		System.out.println(currentTime);
 		String q = "select obj from " + clazz.getName() + " as obj where status=1 and sysdate()<endDateTime";
 		return entityManager.createQuery(q).getResultList();
+	}*/
+	
+	public List<FarmerSellRequest> currentBidDetails() {
+		String q="select s from FarmerSellRequest s";
+		List<FarmerSellRequest> list = entityManager.createQuery(q).getResultList();
+		try {
+		for(FarmerSellRequest s : list) {
+			String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId = :id";
+			Double max = (Double) entityManager.createQuery(qry).setParameter("id", s.getSellRequestId()).getSingleResult();
+			s.setMaxBidAmount(max);
+			System.out.println(max);
+		}}
+		catch(Exception e){
+			
+		}
+		return list;
 	}
+	
 
+	public List<FarmerSellRequest> fetchAllSellingCrops() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		System.out.println(currentTime);
+		String q = "select s from FarmerSellRequest s where s.status=1 and sysdate()<s.endDateTime";
+		List<FarmerSellRequest> list = entityManager.createQuery(q).getResultList();
+		try {
+			for (FarmerSellRequest s : list) {
+
+				String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId=:id";
+				Double max=(Double) entityManager.createQuery(qry).setParameter("id", s.getSellRequestId()).getSingleResult();
+
+				s.setMaxBidAmount(max);
+				System.out.println(max);
+				
+			}
+		} catch (Exception e) {
+
+		}
+		return list;
+	}
+	
+	public <E> List<E> fetchAllUnapproved(Class<E> clazz) {
+		String q = "select obj from " + clazz.getName() + " as obj where status=0";
+		return entityManager.createQuery(q).getResultList();
+	}
+	
 }

@@ -1,6 +1,5 @@
 package com.lti.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -12,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -55,9 +55,12 @@ public class FarmerSellRequest {
 	
 	@Column(name="base_price")
 	private double basePrice;
+	
+	@Transient
+	private double maxBidAmount;
 
 	
-	@JsonIgnore
+	
 	@ManyToOne
 	@JoinColumn(name="farmer_Id")
 	private FarmerDetails farmerDetails;
@@ -164,4 +167,13 @@ public class FarmerSellRequest {
 		this.basePrice = basePrice;
 	}
 
+	public double getMaxBidAmount() {
+		return maxBidAmount;
+	}
+
+	public void setMaxBidAmount(double maxBidAmount) {
+		this.maxBidAmount = maxBidAmount;
+	}
+
+	
 }

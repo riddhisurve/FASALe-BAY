@@ -19,9 +19,13 @@
 	<a href="about.html">About</a>
 </div>
   <article>
+  <div id="result"></div>
+  <script>
+  document.getElementById("result").innerHTML =sessionStorage.getItem("name");
+  </script>
     <a href = "Admin.html">Crop Sell Requests</a></br></br>
-    <a href = "">See all Farmer details</a></br></br>
-    <a href = "">See all Bidder details</a></br>
+    <a href = "DisplayAllFarmerDetails.html">See all Farmer details</a></br></br>
+    <a href = "DisplayAllBidderDetails.html">See all Bidder details</a></br>
     
   </article>
 </section>

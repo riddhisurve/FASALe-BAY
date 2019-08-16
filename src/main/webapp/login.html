@@ -20,29 +20,20 @@ $(function() {
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(response) {
-				if(response=="farmer")
+				//alert(JSON.stringify(response));
+				if(response.message=="Valid User")
 					{
 					window.location.href="farmerDashboard.html"
 					}
-				else if(response=="admin")
-				{
-				window.location.href="Admin.html"
-				}
-				else if(response=="bidder")
-				{
-				window.location.href="bidderDashboard.html"
-				}
-				else{
+				else
+					{
+					//window.location.href="login.html"
 					$("#error").html("Invalid Credentials")
-				}
+					}
 			}
 		})
-		
 	})
 });
-
-
-
 </script>
 </head>
 <body>
@@ -51,7 +42,7 @@ $(function() {
 	<div class="user-input-wrp">
 	<br/>
 	<input type="text" class="inputText" id="email" required/>
-	<span class="floating-label">Enter User Id</span>
+	<span class="floating-label">Enter Email Id</span>
 	</div>
 
 	<div class="user-input-wrp">

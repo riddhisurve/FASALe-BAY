@@ -1,0 +1,105 @@
+.regform{
+	margin: auto;
+	width: 30%;
+	border: 1px solid darkgrey;
+	border-radius: 3px;
+	padding:14px 18px;
+	background: linear-gradient(to bottom, white, #C0C0C0);
+	box-shadow: 5px 5px 8px 10px #888888;
+}
+
+#heading{
+	text-align: center;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+	font-weight:300;
+	font-family:"Arial";
+	font-size:30;
+}
+
+
+div{
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+
+
+
+#label{
+	padding: 0px 0px 2px 0px;
+	font-family:"Arial";
+	font-size:13;
+	font-weight:600;
+}
+
+
+input{
+    width: 100%;
+	height: 30px;
+	border: 0;
+	outline: none;
+	background: transparent;
+	border-bottom: 1px solid black;
+}
+.error {
+  color: red;
+  margin-left: 5px;
+  font-family:Arial;
+}
+<!--#image{
+	width: 200px;
+	border-radius: 100px;
+	 margin-left: 42.5%;
+-->
+	
+
+}
+
+
+
+
+
+#submit{
+	font-family:Arial;
+	font-weight:800;
+	color:white;
+    opacity:1;
+	
+    width: 100%;
+	height: 45px;
+	border:1px #fb641b;
+	border-radius:2px;
+	background:grey;
+	box-shadow:0 1px 2px 0 rgba(0,0,0,.2)
+}
+input:focus{
+	  box-shadow: none !important;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border-color: green;
+  
+}
+body{
+	/*background-image: url("ck.jpg");*/
+	color:black;
+	height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+
+
+
+
+

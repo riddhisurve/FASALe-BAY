@@ -51,8 +51,8 @@ public class FarmerDetails {
 	@Column(name="land_pin")
 	private int landPin;
 	
-	@OneToMany(mappedBy="farmerDetails", cascade=CascadeType.ALL)
 	@JsonIgnore
+	@OneToMany(mappedBy="farmerDetails", cascade=CascadeType.ALL)
 	private List<FarmerSellRequest> farmerSellRequest;
 
 	public int getFarmerId() {

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.dao.GenericDao;
 import com.lti.entity.BidderDetails;
+import com.lti.entity.BiddingDetails;
 import com.lti.entity.FarmerDetails;
 import com.lti.entity.FarmerSellRequest;
 
@@ -57,7 +58,7 @@ public class GenericService {
 	}
 	
 	public List<FarmerSellRequest> listAll1() {
-		return dao.fetchAll(FarmerSellRequest.class);
+		return dao.fetchAllUnapproved(FarmerSellRequest.class);
 	}
 	
 	@Transactional
@@ -76,8 +77,29 @@ public class GenericService {
 		return requestId;
 	}
 	
+	/*View Marketplace*/
 	public List<FarmerSellRequest> approvedCropDetails() {
-		return dao.fetchAllSellingCrops(FarmerSellRequest.class);
+		return dao.fetchAllSellingCrops();
 	}
+	
+
+	@Transactional
+	public  List<FarmerSellRequest> currentBidDetails() {
+		return dao.currentBidDetails();
+	}
+	@Transactional
+	public int updateCurrentBid(BiddingDetails biddingDetails) {
+		
+		BiddingDetails bidDetails = (BiddingDetails) dao.save(biddingDetails);
+		return bidDetails.getBiddingId();
+	}
+	
+	public List<FarmerDetails> displayAllFarmers() {
+		return dao.fetchAll(FarmerDetails.class);
+		}
+	
+	public List<BidderDetails> displayAllBidders() {
+		return dao.fetchAll(BidderDetails.class);
+		}
 	
 }

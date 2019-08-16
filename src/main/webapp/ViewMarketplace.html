@@ -5,6 +5,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 $(function(){
+	
 		$.ajax({
 			url :"approvedCropDetails.lti",
 			method : 'POST',
@@ -15,7 +16,9 @@ $(function(){
 				$("#details").append($("<h4>").text("Crop Type : "+crop.cropType));
 				$("#details").append($("<h4>").text("Crop Name : "+crop.cropName));
 				$("#details").append($("<h4>").text("Base Price : "+crop.basePrice));
+				$("#details").append($("<h4>").text("Current Bid : "+crop.maxBidAmount));
 				//$("#details").append($("<h4>").text(""+crop.fertilizerType));
+				
 				$("#details").append($("<hr>"));
 				//alert(JSON.stringify(response));
 				}

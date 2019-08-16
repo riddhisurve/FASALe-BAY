@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
+<style>
+table {
+	border: 3px ;
+	width: 100%;
+}
+
+#detailsForm {
+	text-align: left;
+	margin-top: 75px;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.4.1.js">
+	
+</script>
+<script>
+	$(function() {
+		$.ajax({
+
+			url : 'displayAllFarmerDetails.lti',
+			method : 'POST',
+			data : 'JSON',
+			contentType : 'application/json',
+			success : function(response) {
+				 var trHTML = ' ';
+	               $.each(response, function (key,value) {
+	                  trHTML += 
+	                	     '<tr><td>' + value.name + 
+		                     '</td><td>' + value.contactNumber + 
+		                     '</td><td>' + value.email + 
+		                     '</td><td>' + value.address1 + 
+		                     '</td><td>' + value.city +
+		                     '</td><td>' + value.state +
+		                     '</td><td>' + value.pincode +
+		                     '</td><td>' + value.landArea +
+		                     '</td><td>' + value.landAddress +
+		                     '</td><td>' + value.landPin +
+		                     '</td></tr>';
+		       		});
+	               
+	          $('#records_table').append(trHTML);    
+				
+				}
+			});
+		});
+
+		
+</script>	
+</head>
+<body>
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+	<table id="records_table" border='1'>
+		<tr>
+			<th align="center" >Farmer Name</th>
+			<th align="center" >Contact Number</th>
+			<th align="center">Email</th>
+			<th align="center" >Address1</th>
+			<th align="center" >City</th>
+			<th align="center" >State</th>
+			<th align="center" >Pincode</th>
+			<th align="center" >Land Area</th>
+			<th align="center" >Land Address</th>
+			<th align="center" >Land Pin</th>
+
+		</tr>
+	</table>
+	<form id="detailsForm">
+	</form>
+
+</body>
+</html>

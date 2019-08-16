@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="TBL_BIDDERDETAILS")
 public class BidderDetails {
@@ -36,6 +38,8 @@ public class BidderDetails {
 	private String pancard;
 	private String certificate;
 	
+
+	@JsonIgnore
 	@OneToMany(mappedBy="bidderDetails", cascade=CascadeType.ALL)
 	private Set<BiddingDetails> biddingDetails;
 

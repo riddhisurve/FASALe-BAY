@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TBL_BIDDINGDETAILS")
 public class BiddingDetails {
@@ -22,6 +24,7 @@ public class BiddingDetails {
 	private double bidAmount;
 
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "bidder_id")
 	private BidderDetails bidderDetails;
 	

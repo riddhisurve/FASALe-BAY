@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.dto.Credential;
+import com.lti.dto.CurrentBid;
 import com.lti.dto.Status;
 import com.lti.entity.BidderDetails;
+import com.lti.entity.BiddingDetails;
 import com.lti.entity.FarmerDetails;
 import com.lti.entity.FarmerSellRequest;
 import com.lti.service.GenericService;
@@ -21,8 +23,8 @@ public class GenericController {
 
 	@Autowired
 	private GenericService genericService;
-	
-	@Autowired 
+
+	@Autowired
 	private LoginService loginService;
 
 	@PostMapping("/addFarmer.lti")
@@ -33,6 +35,7 @@ public class GenericController {
 		status.setGeneratedId(farmerId);
 		return status;
 	}
+
 	@PostMapping("/addBidder.lti")
 	public Status add(@RequestBody BidderDetails bidder) {
 		int bidderId = genericService.addBidder(bidder);
@@ -41,16 +44,18 @@ public class GenericController {
 		status.setGeneratedId(bidderId);
 		return status;
 	}
-	
+
 	@GetMapping("/dispRequest.lti")
-	public List<FarmerSellRequest> dispRequest(){
-		return  genericService.displayRequest();
+	public List<FarmerSellRequest> dispRequest() {
+		return genericService.displayRequest();
 	}
-	
+
 	@PostMapping("/login.lti")
-	public String loginValidation(@RequestBody Credential credentials) {
-		return loginService.farmerLogin(credentials.getEmail(), credentials.getPassword(),credentials.getRole());
+	public Status loginValidation(@RequestBody Credential credentials) {
+		Status obj =  loginService.login(credentials.getEmail(), credentials.getPassword(), credentials.getRole());
+		return obj;
 	}
+ 
 	int requestId;
 
 	@PostMapping("/addFarmerSellRequest.lti")
@@ -83,9 +88,68 @@ public class GenericController {
 		genericService.assignFarmerIdToFSR(req, farmerId);
 		return req;
 	}
-	
+
 	@PostMapping("/listAll.lti")
 	public List<FarmerSellRequest> listAll() {
 		return genericService.listAll();
-		}
+	}
+
+
+
+@GetMapping("/bidPage.lti")
+public List<FarmerSellRequest> fetchCurrentBidDetails() {
+return genericService.currentBidDetails();
+
+}
+@PostMapping("/updateCurrentBid.lti")
+public Status add(@RequestBody CurrentBid currentBid) {
+	BiddingDetails bd= new BiddingDetails();
+	bd.setBidAmount(currentBid.getCurrentBid());
+	FarmerSellRequest fsr=new FarmerSellRequest();
+	fsr.setSellRequestId(currentBid.getCropId());
+	bd.setFarmerSellRequest(fsr);
+	BidderDetails bdr=new BidderDetails();
+	bdr.setBidderId(currentBid.getBidderId());
+	bd.setBidderDetails(bdr);
+	int biddingId = genericService.updateCurrentBid(bd);
+	Status status = new Status();
+	status.setGeneratedId(biddingId);
+	status.setMessage("Bidding Successfull!");
+   return status;
+}
+
+@PostMapping("/displayAllFarmerDetails.lti")
+public List<FarmerDetails> displayAllFarmers() {
+	return genericService.displayAllFarmers();
+	}
+
+@PostMapping("/displayAllBidderDetails.lti")
+public List<BidderDetails> displayAllBidders() {
+	return genericService.displayAllBidders();
+	}
+
+@PostMapping("/fetchAllFarmerSellRequest.lti")
+public List<FarmerSellRequest> fetchAll() {
+	List<FarmerSellRequest> list=genericService.listAll1();
+    for(FarmerSellRequest x:list)System.out.println(x.getCropType());
+	return list;
+}
+
+/*For view Marketplace*/
+@PostMapping("/approvedCropDetails.lti")
+public List<FarmerSellRequest> approvedCropDetails() {
+	return genericService.approvedCropDetails();
+	
+}
+
+/*After admin click approve*/
+@PostMapping("/requestApproved.lti")
+public Status requestApproved(@RequestBody int requestId) {
+	genericService.requestApproved(requestId);
+	Status status = new Status();
+	status.setMessage("Request added!");
+	status.setGeneratedId(requestId);
+	return status;
+}
+
 }
