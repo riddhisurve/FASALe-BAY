@@ -5,33 +5,52 @@
 <title>Welcome to FASALe-BAY</title>
 <link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+	$(function() {
+		alert(sessionStorage.getItem("fid"));
+		if (sessionStorage.getItem("fid") == null) {
+			alert("You need to login first");
+			window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("clicked on logout hmmm");
+				alert(sessionStorage.getItem("fid"));
+				sessionStorage.removeItem("fid");
+				alert(sessionStorage.getItem("fid"));
+				window.location.href = "login.html";
+			})
+		}
+
+	});
+</script>
+
 <body>
 
-<header>
-  <h2>FASALe-BAY</h2>
-</header>
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
 
-<section>
-<div class="topnav">
-	<a href="FasaleBay.html">Home</a>
-	<a href="login.html">Login</a>
-	<a href="contact.html">Contact</a>
-	<a href="about.html">About</a>
-</div>
-  <article>
-  <div id="result"></div>
-  <script>
-  document.getElementById("result").innerHTML =sessionStorage.getItem("name");
-  </script>
-    <a href = "Admin.html">Crop Sell Requests</a></br></br>
-    <a href = "DisplayAllFarmerDetails.html">See all Farmer details</a></br></br>
-    <a href = "DisplayAllBidderDetails.html">See all Bidder details</a></br>
-    
-  </article>
-</section>
-<footer>
-  <p>Footer</p>
-</footer>
+	<section>
+		<div class="topnav">
+			<a href="FasaleBay.html">Home</a> <a href="login.html">Login</a> <a
+				href="contact.html">Contact</a> <a href="about.html">About</a> <a
+				href="login.html" id="logout">Logout</a>
+
+		</div>
+
+		<article>
+			<div id="result"></div>
+
+			<a href="FarmerSellRequestForm.html">Place crop sell request</a></br> </br> <a
+				href="ViewMarketplace.html">View Marketplace</a></br> </br> <a
+				href="DisplayAllBidderDetails.html">Crop sell status</a></br>
+
+		</article>
+	</section>
+	<footer>
+		<p>Footer</p>
+	</footer>
 
 </body>
 </html>

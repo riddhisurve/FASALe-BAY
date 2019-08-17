@@ -2,16 +2,16 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Approval Page</title>
+
 <style>
 table {
 	border: 3px solid blue;
 	width: 100%;
 }
 
-#bidFrm {
-	text-align: left;
-	margin-top: 75px;
+td{
+text-align: center;
 }
 </style>
 
@@ -20,19 +20,16 @@ table {
 	$(function() {
 
 		$("input[type='submit']").click(function() {
-
-			var obj = {
-				cropId : $("input[name='cropId']:checked").val(),
-				currentBid : $("#currentBid").val(),
-				bidderId :sessionStorage.bid
-
-			}
-//alert(JSON.stringify(bidderId));
+			
+			var id = $("input[name='cropId']:checked").val();
+			//var id = $(this).attr("input[name='cropId']:checked");
+			//alert(JSON.stringify(id));
+		
 			$.ajax({
 
-				url : 'updateCurrentBid.lti',
+				url : 'updateBidApproval.lti',
 				method : 'POST',
-				data : JSON.stringify(obj),
+				data : JSON.stringify(id),
 				contentType : 'application/json',
 				success : function(response) {
 					alert(JSON.stringify(response))
@@ -51,6 +48,7 @@ table {
 										type : "GET",
 										dataType : "json",
 										success : function(response) {
+											//window.location.reload();
 											var trHTML = ' ';
 											$
 													.each(
@@ -72,6 +70,7 @@ table {
 															});
 
 											$('#records_table').append(trHTML);
+											
 										}
 									});
 						});
@@ -79,8 +78,13 @@ table {
 	})
 </script>
 
+
 </head>
-<body bgcolor="white">
+
+
+
+<body>
+
 	<table id="records_table" border='1'>
 		<tr bgcolor="yellow">
 			<th align="center" >Crop ID</th>
@@ -88,13 +92,14 @@ table {
 			<th align="center" >Crop Type</th>
 			<th align="center" >Base Price</th>
 			<th align="center" >Current Bid</th>
-			<th align="center" >Select</th>
+			<th align="center" >Action</th>
 		</tr>
 	</table>
-	<form id="bidFrm">
-		Bid Amount : <input type="number" id="currentBid" /> <input
-			type="submit" value="BID">
+
+<form id="approveFrm">
+		<input type="submit" value="Approve" >
 	</form>
+
 
 </body>
 </html>

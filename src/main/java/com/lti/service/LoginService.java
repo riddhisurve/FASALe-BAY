@@ -26,7 +26,8 @@ public class LoginService {
 				return status;
 			} else {
 				Status status = new Status();
-				status.setMessage("Valid User");
+				status.setMessage("Valid Farmer");
+				   status.setGeneratedId(obj.getFarmerId());
 				return status;
 			}
 		} else if (role.equals("admin")) {
@@ -38,7 +39,8 @@ public class LoginService {
 				return status;
 			} else {
 				Status status = new Status();
-				status.setMessage("Valid User");
+				status.setMessage("Valid Admin");
+				  status.setGeneratedId(obj.getAdminId());
 				return status;
 			}
 		} else {
@@ -46,10 +48,12 @@ public class LoginService {
 			if (obj == null) {
 				Status status = new Status();
 				status.setMessage("Invalid User");
+				
 				return status;
 			} else {
 				Status status = new Status();
-				status.setMessage("Valid User");
+				status.setMessage("Valid Bidder");
+				  status.setGeneratedId(obj.getBidderId());
 				return status;
 			}
 		}

@@ -19,6 +19,7 @@ public class GenericService {
 	@Autowired
 	private GenericDao dao;
 	
+	
 	@Transactional
 	public int addFarmer(FarmerDetails farmer) {
 		FarmerDetails updatedfarmer= (FarmerDetails) dao.save(farmer);
@@ -53,8 +54,12 @@ public class GenericService {
 		insertFarmerIdFSR.setFarmerDetails(farmerDetails);
 		dao.save(insertFarmerIdFSR);
 	}
-	public List<FarmerSellRequest> listAll(){
-		return dao.fetchDataFSR(FarmerSellRequest.class);
+	public List<FarmerSellRequest> listAll(int requestId){
+		return dao.fetchDataFSR(FarmerSellRequest.class,requestId);
+	}
+	
+	public List<FarmerSellRequest> listHistory(int fid){
+		return dao.fetchDataFSR(FarmerSellRequest.class,fid);
 	}
 	
 	public List<FarmerSellRequest> listAll1() {
@@ -78,8 +83,8 @@ public class GenericService {
 	}
 	
 	/*View Marketplace*/
-	public List<FarmerSellRequest> approvedCropDetails() {
-		return dao.fetchAllSellingCrops();
+	public List<FarmerSellRequest> approvedCropDetails(int farmerId) {
+		return dao.fetchAllSellingCrops(farmerId);
 	}
 	
 
@@ -101,5 +106,50 @@ public class GenericService {
 	public List<BidderDetails> displayAllBidders() {
 		return dao.fetchAll(BidderDetails.class);
 		}
+	
+	@Transactional
+	public String updateBidApproval(int sellReqId ) {
+		FarmerSellRequest fsr=dao.fetchById(FarmerSellRequest.class, sellReqId);
+		fsr.setSold(1);
+		dao.save(fsr);
+		return "Approved";
+	}
+	
+	@Transactional
+	public int stopBidding(int requestId) {
+
+		FarmerSellRequest insertFarmerIdFSR = dao.fetchById(FarmerSellRequest.class, requestId);
+		insertFarmerIdFSR.setSold(1);
+		insertFarmerIdFSR.setDateTime(LocalDateTime.now());
+
+		LocalDateTime startDateTime = insertFarmerIdFSR.getDateTime();
+		int duration = insertFarmerIdFSR.getDuration();
+		LocalDateTime endDateTime = startDateTime.plusDays(duration);
+		insertFarmerIdFSR.setEndDateTime(endDateTime);
+
+		dao.save(insertFarmerIdFSR);
+		return requestId;
+	}
+	
+	@Transactional
+	public int requestUnapproved(int requestId) {
+		
+		FarmerSellRequest insertFarmerIdFSR = dao.fetchById(FarmerSellRequest.class, requestId);
+		insertFarmerIdFSR.setStatus(-1);
+		insertFarmerIdFSR.setDateTime(LocalDateTime.now());
+		
+		LocalDateTime startDateTime = insertFarmerIdFSR.getDateTime();
+		int duration = insertFarmerIdFSR.getDuration();
+		LocalDateTime endDateTime = startDateTime.plusDays(duration);
+		insertFarmerIdFSR.setEndDateTime(endDateTime);
+		
+		dao.save(insertFarmerIdFSR);
+		return requestId;
+	}
+	
+	@Transactional
+	public List<FarmerSellRequest> viewRequestStatus(int farmerId) {
+		return dao.fetchAllRequestByFarmerId(farmerId);
+	}
 	
 }

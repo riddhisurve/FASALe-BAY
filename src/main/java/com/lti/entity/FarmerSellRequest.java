@@ -42,7 +42,17 @@ public class FarmerSellRequest {
 	@Column(name="end_date_time")
 	private LocalDateTime endDateTime;
 	
+	private int sold = 0;
 	
+	
+	public int getSold() {
+		return sold;
+	}
+
+	public void setSold(int sold) {
+		this.sold = sold;
+	}
+
 	public LocalDateTime getEndDateTime() {
 		return endDateTime;
 	}

@@ -49,7 +49,6 @@ public class GenericDao {
 		try {
 
 			FarmerDetails f = (FarmerDetails) q.getSingleResult();
-			System.out.println(f);
 			return f;
 
 		} catch (Exception e) {
@@ -68,7 +67,7 @@ public class GenericDao {
 		try {
 
 			BidderDetails f = (BidderDetails) q.getSingleResult();
-			System.out.println(f);
+			
 			return f;
 
 		} catch (Exception e) {
@@ -86,7 +85,7 @@ public class GenericDao {
 		try {
 
 			Admin a = (Admin) q.getSingleResult();
-			System.out.println(a);
+			
 			return a;
 
 		} catch (Exception e) {
@@ -95,9 +94,11 @@ public class GenericDao {
 		}
 	}
 
-	public <E> List<E> fetchDataFSR(Class<E> clazz) {
-		String q = "select obj from " + clazz.getName() + " as obj where sellRequestId=121";
-		return entityManager.createQuery(q).getResultList();
+	public <E> List<E> fetchDataFSR(Class<E> clazz,int fid) {
+		String query = "select obj from " + clazz.getName() + " as obj where sellRequestId=:id";
+		Query q = entityManager.createQuery(query);
+		q.setParameter("id", fid);
+		return q.getResultList();
 	}
 
 	/*public <E> List<E> fetchAllSellingCrops(Class<E> clazz) {
@@ -106,16 +107,23 @@ public class GenericDao {
 		String q = "select obj from " + clazz.getName() + " as obj where status=1 and sysdate()<endDateTime";
 		return entityManager.createQuery(q).getResultList();
 	}*/
+	public <E> List<E> fetchDataFSH(Class<E> clazz,int fid) {
+		String query = "select obj from " + clazz.getName() + " as obj where obj.farmerId=:id and obj.sold=1 ";
+		
+		Query q = entityManager.createQuery(query);
+		q.setParameter("id", fid);
+		return q.getResultList();
+	}
 	
 	public List<FarmerSellRequest> currentBidDetails() {
-		String q="select s from FarmerSellRequest s";
+		String q="select s from FarmerSellRequest s where s.sold=0 and sysdate()<s.endDateTime";
 		List<FarmerSellRequest> list = entityManager.createQuery(q).getResultList();
 		try {
 		for(FarmerSellRequest s : list) {
-			String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId = :id";
+			String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId = :id ";
 			Double max = (Double) entityManager.createQuery(qry).setParameter("id", s.getSellRequestId()).getSingleResult();
 			s.setMaxBidAmount(max);
-			System.out.println(max);
+			
 		}}
 		catch(Exception e){
 			
@@ -124,30 +132,48 @@ public class GenericDao {
 	}
 	
 
-	public List<FarmerSellRequest> fetchAllSellingCrops() {
-		LocalDateTime currentTime = LocalDateTime.now();
-		System.out.println(currentTime);
-		String q = "select s from FarmerSellRequest s where s.status=1 and sysdate()<s.endDateTime";
-		List<FarmerSellRequest> list = entityManager.createQuery(q).getResultList();
-		try {
-			for (FarmerSellRequest s : list) {
+	public List<FarmerSellRequest> fetchAllSellingCrops(int farmerId) {
+		 LocalDateTime currentTime = LocalDateTime.now();
+		 System.out.println(currentTime);
+		 
+		 String q = "select s from FarmerSellRequest s where s.status=1 and sold=0 and sysdate()<s.endDateTime and s.farmerDetails.farmerId=:farmerId";
+		 Query query = entityManager.createQuery(q);
+		 query.setParameter("farmerId", farmerId);
+		 List<FarmerSellRequest> list = query.getResultList();
 
-				String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId=:id";
-				Double max=(Double) entityManager.createQuery(qry).setParameter("id", s.getSellRequestId()).getSingleResult();
+		 try {
+		  for (FarmerSellRequest s : list) {
 
-				s.setMaxBidAmount(max);
-				System.out.println(max);
-				
-			}
-		} catch (Exception e) {
+		   String qry = "select max(b.bidAmount) from BiddingDetails b where b.farmerSellRequest.sellRequestId=:id";
+		   Double max = (Double) entityManager.createQuery(qry).setParameter("id", s.getSellRequestId())
+		     .getSingleResult();
 
+		   s.setMaxBidAmount(max);
+		   System.out.println(max);
+
+		  }
+		 } catch (Exception e) {
+
+		 }
+		 return list;
 		}
-		return list;
-	}
 	
 	public <E> List<E> fetchAllUnapproved(Class<E> clazz) {
 		String q = "select obj from " + clazz.getName() + " as obj where status=0";
 		return entityManager.createQuery(q).getResultList();
 	}
+	
+	public List<FarmerSellRequest> fetchAllRequestByFarmerId(int farmerId) {
+	FarmerSellRequest fsr = new FarmerSellRequest();
+	
+    String query="select s from FarmerSellRequest s where s.farmerDetails.farmerId=:id";
+	Query q = entityManager.createQuery(query);
+	q.setParameter("id", farmerId);
+	int Status = fsr.getStatus();
+	System.out.println(Status);
+	return q.getResultList();
+	
+}
+	
 	
 }

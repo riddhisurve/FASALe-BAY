@@ -20,14 +20,50 @@ $(function() {
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(response) {
-				//alert(JSON.stringify(response));
-				if(response.message=="Valid User")
+				alert(JSON.stringify(response));
+				if(response.message=="Valid Farmer")
 					{
+					if(typeof (Storage)!=="undefined"){
+					      if(sessionStorage.id)
+					       {
+					       }
+					      else{
+					       alert(response.generatedId);
+					       sessionStorage.fid=response.generatedId;
+					      }
+					     }
 					window.location.href="farmerDashboard.html"
 					}
-				else
+				else if (response.message=="Valid Bidder")
 					{
-					//window.location.href="login.html"
+					if(typeof (Storage)!=="undefined"){
+					      if(sessionStorage.id)
+					       {
+					   
+					       }
+					      else{
+					       alert(response.generatedId);
+					       sessionStorage.bid=response.generatedId;
+					      }
+					     }
+					window.location.href="bidderDashboard.html"
+					}
+				else if (response.message=="Valid Admin")
+				{
+					if(typeof (Storage)!=="undefined"){
+					      if(sessionStorage.id)
+					       {
+					   
+					       }
+					      else{
+					       alert(response.generatedId);
+					       sessionStorage.aid=response.generatedId;
+					      }
+					     }
+				window.location.href="adminDashboard.html"
+				}
+				else
+				{
 					$("#error").html("Invalid Credentials")
 					}
 			}

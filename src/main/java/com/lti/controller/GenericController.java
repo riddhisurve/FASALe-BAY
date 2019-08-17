@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.dto.Credential;
@@ -52,10 +53,10 @@ public class GenericController {
 
 	@PostMapping("/login.lti")
 	public Status loginValidation(@RequestBody Credential credentials) {
-		Status obj =  loginService.login(credentials.getEmail(), credentials.getPassword(), credentials.getRole());
+		Status obj = loginService.login(credentials.getEmail(), credentials.getPassword(), credentials.getRole());
 		return obj;
 	}
- 
+
 	int requestId;
 
 	@PostMapping("/addFarmerSellRequest.lti")
@@ -83,73 +84,120 @@ public class GenericController {
 	public int setFarmerIDToFSR(@RequestBody int farmerId) {
 
 		int req = getRequestId();
-		System.out.println("req" + req);
-		System.out.println("farmerID" + farmerId);
+
 		genericService.assignFarmerIdToFSR(req, farmerId);
 		return req;
 	}
 
-	@PostMapping("/listAll.lti")
-	public List<FarmerSellRequest> listAll() {
-		return genericService.listAll();
+	@GetMapping("/listAll.lti")
+	public List<FarmerSellRequest> listAll(@RequestParam("id") int requestId) {
+
+		return genericService.listAll(requestId);
 	}
 
+	@GetMapping("/listHistory.lti")
+	public List<FarmerSellRequest> listHistory(@RequestParam("fid") int fid) {
 
-
-@GetMapping("/bidPage.lti")
-public List<FarmerSellRequest> fetchCurrentBidDetails() {
-return genericService.currentBidDetails();
-
-}
-@PostMapping("/updateCurrentBid.lti")
-public Status add(@RequestBody CurrentBid currentBid) {
-	BiddingDetails bd= new BiddingDetails();
-	bd.setBidAmount(currentBid.getCurrentBid());
-	FarmerSellRequest fsr=new FarmerSellRequest();
-	fsr.setSellRequestId(currentBid.getCropId());
-	bd.setFarmerSellRequest(fsr);
-	BidderDetails bdr=new BidderDetails();
-	bdr.setBidderId(currentBid.getBidderId());
-	bd.setBidderDetails(bdr);
-	int biddingId = genericService.updateCurrentBid(bd);
-	Status status = new Status();
-	status.setGeneratedId(biddingId);
-	status.setMessage("Bidding Successfull!");
-   return status;
-}
-
-@PostMapping("/displayAllFarmerDetails.lti")
-public List<FarmerDetails> displayAllFarmers() {
-	return genericService.displayAllFarmers();
+		return genericService.listHistory(fid);
 	}
 
-@PostMapping("/displayAllBidderDetails.lti")
-public List<BidderDetails> displayAllBidders() {
-	return genericService.displayAllBidders();
+	@GetMapping("/bidPage.lti")
+	public List<FarmerSellRequest> fetchCurrentBidDetails() {
+		return genericService.currentBidDetails();
+
 	}
 
-@PostMapping("/fetchAllFarmerSellRequest.lti")
-public List<FarmerSellRequest> fetchAll() {
-	List<FarmerSellRequest> list=genericService.listAll1();
-    for(FarmerSellRequest x:list)System.out.println(x.getCropType());
-	return list;
-}
+	@PostMapping("/updateCurrentBid.lti")
+	public Status add(@RequestBody CurrentBid currentBid) {
+		System.out.println(currentBid.getBidderId());
+		BiddingDetails bd = new BiddingDetails();
+		bd.setBidAmount(currentBid.getCurrentBid());
+		FarmerSellRequest fsr = new FarmerSellRequest();
+		fsr.setSellRequestId(currentBid.getCropId());
+		bd.setFarmerSellRequest(fsr);
+		BidderDetails bdr = new BidderDetails();
+		bdr.setBidderId(currentBid.getBidderId());
+		bd.setBidderDetails(bdr);
+		int biddingId = genericService.updateCurrentBid(bd);
+		Status status = new Status();
+		status.setGeneratedId(biddingId);
+		status.setMessage("Bidding Successfull!");
+		return status;
+	}
 
-/*For view Marketplace*/
-@PostMapping("/approvedCropDetails.lti")
-public List<FarmerSellRequest> approvedCropDetails() {
-	return genericService.approvedCropDetails();
-	
-}
+	@PostMapping("/displayAllFarmerDetails.lti")
+	public List<FarmerDetails> displayAllFarmers() {
+		return genericService.displayAllFarmers();
+	}
 
-/*After admin click approve*/
-@PostMapping("/requestApproved.lti")
-public Status requestApproved(@RequestBody int requestId) {
-	genericService.requestApproved(requestId);
-	Status status = new Status();
-	status.setMessage("Request added!");
-	status.setGeneratedId(requestId);
-	return status;
-}
+	@PostMapping("/displayAllBidderDetails.lti")
+	public List<BidderDetails> displayAllBidders() {
+		return genericService.displayAllBidders();
+	}
+
+	@PostMapping("/fetchAllFarmerSellRequest.lti")
+	public List<FarmerSellRequest> fetchAll() {
+		List<FarmerSellRequest> list = genericService.listAll1();
+		for (FarmerSellRequest x : list)
+			System.out.println(x.getCropType());
+		return list;
+	}
+
+	/*
+	 * For view Marketplace
+	 * 
+	 * @PostMapping("/approvedCropDetails.lti") public List<FarmerSellRequest>
+	 * approvedCropDetails() { return genericService.approvedCropDetails();
+	 * 
+	 * }
+	 */
+
+	/* For view Marketplace */
+	@GetMapping("/approvedCropDetails.lti")
+	public List<FarmerSellRequest> approvedCropDetails(@RequestParam("id") int farmerId) {
+		return genericService.approvedCropDetails(farmerId);
+
+	}
+
+	/* After admin click approve */
+	@PostMapping("/requestApproved.lti")
+	public Status requestApproved(@RequestBody int requestId) {
+		genericService.requestApproved(requestId);
+		Status status = new Status();
+		status.setMessage("Request added!");
+		status.setGeneratedId(requestId);
+		return status;
+	}
+
+	@PostMapping("/updateBidApproval.lti")
+	public String updateBidApproval(@RequestBody int sellReqId) {
+		System.out.println(sellReqId);
+		return genericService.updateBidApproval(sellReqId);
+	}
+
+	/* After farmer clicks stop bidding */
+	@PostMapping("/stopBidding.lti")
+	public Status stopBidding(@RequestBody int requestId) {
+		genericService.stopBidding(requestId);
+		Status status = new Status();
+		status.setMessage("Request added!");
+		status.setGeneratedId(requestId);
+		return status;
+	}
+
+	@PostMapping("/requestUnapproved.lti")
+	public Status requestUnapproved(@RequestBody int requestId) {
+		genericService.requestUnapproved(requestId);
+		Status status = new Status();
+		status.setMessage("Request rejected!");
+		status.setGeneratedId(requestId);
+		return status;
+	}
+
+	@PostMapping("viewRequestStatus.lti")
+	public List<FarmerSellRequest> viewRequestStatus(@RequestBody int farmerId) {
+		System.out.println(farmerId);
+		return genericService.viewRequestStatus(farmerId);
+	}
 
 }

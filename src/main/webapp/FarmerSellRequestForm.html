@@ -3,99 +3,121 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 <script>
 	$(function() {
-		$("#fsr-form").submit(function(evt) {
-			evt.preventDefault();
-			var obj = {
-				cropName : $("#crop-name").val(),
-				cropType : $("#crop-type").val(),
-				fertilizerType : $("#fertilizer-type").val(),
-				quantity : $("#quantity").val(),
-				soilPhCertificate : $("#soil-ph-certificate").val(),
-				duration : $("#duration").val(),
-				status : 0,
-				basePrice : $("#basePrice").val()
-			};
-			var farmerId = $('#farmerId').val();
-			$.ajax({
-				url : 'addFarmerSellRequest.lti',
-				method : 'POST',
-				data : JSON.stringify(obj),
-				contentType : 'application/json',
-				success : function(response) {
-					alert(JSON.stringify(response));
-					$.ajax({
-						url : 'setFarmerIDToFSR.lti',
-						method : 'POST',
-						data : JSON.stringify(farmerId),
-						contentType : 'application/json',
-						success : function(response) {
-							//redirectToURL('FarmerSellRequestResult.html'+src)
-							window.location.href = "FarmerSellRequestResult.html";
-							
-							/*var fsrId = response.req;		// Trying to pass farmerID to FarmerSellRequestResult.html page
-							$.ajax({
-					            type : "post",
-					            url : "FarmerSellRequestResult.html",
-					            data :  "id="+fsrId,  //you can pass value like this.
-					            cache : false,
-					            success : function(html) {
-					                //$('#msg').html(html);
-					            	window.location.href = "FarmerSellRequestResult.html";
-					            }
-					         });*/
-						}
-					});
-				}
-			});
-		})
+		alert(sessionStorage.getItem("fid"));
+		if (sessionStorage.getItem("fid") == null) {
+		alert("You need to login first");
+		window.location.href = "login.html";
+		} else {
+		$("#fsr-form")
+				.submit(
+						function(evt) {
+							evt.preventDefault();
+							var obj = {
+								cropName : $("#crop-name").val(),
+								cropType : $("#crop-type").val(),
+								fertilizerType : $("#fertilizer-type").val(),
+								quantity : $("#quantity").val(),
+								soilPhCertificate : $(
+										"#soil-ph-certificate").val(),
+								duration : $("#duration").val(),
+								status : 0,
+								basePrice : $("#basePrice").val()
+							};
+							var farmerId = sessionStorage.getItem("fid");
+							$
+									.ajax({
+										url : 'addFarmerSellRequest.lti',
+										method : 'POST',
+										data : JSON.stringify(obj),
+										contentType : 'application/json',
+										success : function(response) {
+											sessionStorage.sellRequestId = response.generatedId;
+											alert(JSON.stringify(response));
+											$
+													.ajax({
+														url : 'setFarmerIDToFSR.lti',
+														method : 'POST',
+														data : JSON
+																.stringify(farmerId),
+														contentType : 'application/json',
+														success : function(
+																response) {
+															window.location.href = "FarmerSellRequestResult.html";
+
+														}
+													});
+										}
+									});
+						})
+		}
+
 	})
 </script>
 
 </head>
 <body>
-	<h2>Farmer Sell Request Form</h2>
-	<form id="fsr-form">
-		<div>
-			<label for="farmerId">Your ID </label> <input type="number"
-				id="farmerId" name="farmerId"></input>
+
+
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
+
+	<section>
+		<div class="topnav">
+			<a href="FasaleBay.html">Home</a> <a href="login.html">Login</a> <a
+				href="contact.html">Contact</a> <a href="about.html">About</a> <a
+				href="login.html" id="logout">Logout</a>
+
 		</div>
-		<div>
-			<label for="crop-name">Crop Name </label> <input type="text"
-				id="crop-name" name="crop-name"></input>
-		</div>
-		<div>
-			<label for="crop-type">Crop Type </label> <input type="text"
-				id="crop-type" name="crop-type"></input>
-		</div>
-		<div>
-			<label for="fertilizer-type">Fertilizer Type</label> <input
-				type="text" id="fertilizer-type" name="fertilizer-type"></input>
-		</div>
-		<div>
-			<label for="quantity">Quantity<span>(in kg)</span></label> <input
-				type="text" id="quantity" name="quantity"></input>
-		</div>
-		<div>
-			<label for="basePrice">Base Price</label> <input
-				type="number" id="basePrice" name="basePrice"></input>
-		</div>
-		<div>
-			<div>
-				<label for="soil-ph-certificate">Soil pH Certificate</label> <input
-					type="text" id="soil-ph-certificate" name="soil-ph-certificate"></input>
-			</div>
-			<div>
-				<label for="duration">Upload duration</label> <input type="text"
-					id="duration" name="duration"></input>
-			</div>
-			<div>
-				<input type="submit" value="PLACE REQUEST" />
-			</div>
-<div id ="msg"></div>
-			
+
+		<article>
+			<div id="result"></div>
+			<h2>Farmer Sell Request Form</h2>
+			<form id="fsr-form">
+				<div>
+					<label for="crop-name">Crop Name </label> <input type="text"
+						id="crop-name" name="crop-name"></input>
+				</div>
+				<div>
+					<label for="crop-type">Crop Type </label> <input type="text"
+						id="crop-type" name="crop-type"></input>
+				</div>
+				<div>
+					<label for="fertilizer-type">Fertilizer Type</label> <input
+						type="text" id="fertilizer-type" name="fertilizer-type"></input>
+				</div>
+				<div>
+					<label for="quantity">Quantity<span>(in kg)</span></label> <input
+						type="text" id="quantity" name="quantity"></input>
+				</div>
+				<div>
+					<label for="basePrice">Base Price</label> <input type="number"
+						id="basePrice" name="basePrice"></input>
+				</div>
+				<div>
+					<div>
+						<label for="soil-ph-certificate">Soil pH Certificate</label> <input
+							type="text" id="soil-ph-certificate" name="soil-ph-certificate"></input>
+					</div>
+					<div>
+						<label for="duration">Upload duration</label> <input type="text"
+							id="duration" name="duration"></input>
+					</div>
+					<div>
+						<input type="submit" value="PLACE REQUEST" />
+					</div>
+					<div id="msg"></div>
+		</article>
+	</section>
+	<footer>
+		<p>Footer</p>
+	</footer>
+
+
 </body>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(function() {
+
+	$("#btn").click(function() {
+
+		var id = $("#farmerId").val();
+		alert(JSON.stringify(id));
+	
+		$.ajax({
+			url : 'viewRequestStatus.lti',
+			method : 'POST',
+			data : JSON.stringify(id),
+			contentType : 'application/json',
+			success : function(response) {
+				alert(JSON.stringify(response));
+				
+				for(var crop of response){
+					$("#crop").append(crop.cropType);
+					$("#crop").append($("<h6>").text(crop.cropName));
+					if(crop.status==1)
+						{
+					$("#crop").append($("<h6>").text("Approved"));
+						}
+					else if(crop.status==-1)
+						{
+					$("#crop").append($("<h6>").text("Rejected"));
+						}
+					else{
+						$("#crop").append($("<h6>").text("Unapproved"));
+					}
+						}
+			}
+			
+		})
+	})
+		
+
+		})
+	
+
+</script>
+</head>
+<body>
+
+	
+	<form id="requestForm">
+		Enter Sell Request Id : <input type="number" id="farmerId" /> <input
+			type="button" value="SUBMIT" id="btn">
+	</form>
+
+<div id="crop"></div>
+</body>
+</html>

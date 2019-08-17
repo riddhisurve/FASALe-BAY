@@ -11,7 +11,7 @@ $(function(){
 			dataType : 'JSON',
 			contentType : 'application/json',
 			success : function(response) {
-		//		alert(JSON.stringify(response));
+		//	alert(JSON.stringify(response));
 				for(var crop of response){
 				$("#crop").append($("<h6>").text(crop.cropType));
 				$("#crop").append($("<h6>").text(crop.cropName));
@@ -19,14 +19,33 @@ $(function(){
 				$("#crop").append($("<h6>").text(crop.farmerDetails.name));
 
 				var btn = $("<button />");
+				var btn2 = $("<button />");
 				$("#crop").append(btn);
+				$("#crop").append(btn2);
 				btn.attr("class", "approve-btn");
+				btn2.attr("class", "unapprove-btn");
 				btn.attr("data-cropid", crop.sellRequestId);
+				btn2.attr("data-cropid2", crop.sellRequestId);
 				btn.text("Approve");
-
+				btn2.text("Unapprove");
 				}
 			}
 		})
+		$("#crop").on("click", ".unapprove-btn", function() {
+		var id = $(this).attr("data-cropid2");
+		//alert(JSON.stringify(id));
+		$.ajax({
+			url : 'requestUnapproved.lti',
+			method : 'POST',
+			data : JSON.stringify(id),
+			contentType : 'application/json',
+			success : function(response) {
+				alert("done");
+				window.location.reload();
+			}
+		})
+		})
+		
 			$("#crop").on("click", ".approve-btn", function() {
 		var id = $(this).attr("data-cropid");
 		$.ajax({

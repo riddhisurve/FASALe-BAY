@@ -5,13 +5,15 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 $(function(){
-	
+	//var id=1;
+	var id= sessionStorage.getItem("fid");
+	alert(id);
 		$.ajax({
-			url :"approvedCropDetails.lti",
-			method : 'POST',
-			dataType : 'JSON',
+			url :'approvedCropDetails.lti?id='+id,
+			method : 'GET',			
 			contentType : 'application/json',
 			success : function(response) {
+				alert(JSON.stringify(response));
 				for(var crop of response){
 				$("#details").append($("<h4>").text("Crop Type : "+crop.cropType));
 				$("#details").append($("<h4>").text("Crop Name : "+crop.cropName));
@@ -19,14 +21,33 @@ $(function(){
 				$("#details").append($("<h4>").text("Current Bid : "+crop.maxBidAmount));
 				//$("#details").append($("<h4>").text(""+crop.fertilizerType));
 				
+				var btn = $("<button />");
+				$("#details").append(btn);
+				btn.attr("class", "stop-btn");
+				btn.attr("data-cropid", crop.sellRequestId);
+				btn.text("Stop Bidding");
+				
 				$("#details").append($("<hr>"));
 				//alert(JSON.stringify(response));
 				}
 			}
 		})
 		
+		$("#details").on("click", ".stop-btn", function() {
+		var id = $(this).attr("data-cropid");
+		$.ajax({
+			url : 'stopBidding.lti',
+			method : 'POST',
+			data : JSON.stringify(id),
+			contentType : 'application/json',
+			success : function(response) {
+				alert("done");
+				window.location.reload();
+			}
+		})
 	})
-
+		
+	})
 </script>
 </head>
 <body>

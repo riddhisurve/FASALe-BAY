@@ -7,42 +7,86 @@
 	
 </script>
 <script>
-	$(function() {	
+	$(function() {
+		if(sessionStorage.getItem("fid")==null)
+		{
+		alert("You need to login first");
+		window.location.href = "login.html";
+		}
+	else{
+		var id = sessionStorage.getItem("fid");
+		var requestId = sessionStorage.getItem("sellRequestId");
 		$.ajax({
-			url : 'listAll.lti',
-			method : 'POST',
-			contentType : 'application/json',
-			success : function(response) {
-				alert(JSON.stringify(response));
-				for(var index in response)
-					{
-						if(response[index].status==0)
-							{
+					url : 'listAll.lti?id='+requestId,
+					method : 'GET',
+					//data : JSON.stringify(sessionStorage.getItem("sellRequestId")),
+					contentType : 'application/json',
+					success : function(response) {
+						alert(JSON.stringify(response));
+
+						if (response.status == 0) {
 							var status = "Unapproved by Admin";
-							}
-						else if(response[index].status==1)
-							{
+						} else if (response.status == 1) {
 							var status = "Approved by Admin";
-							}
-						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+response[index].sellRequestId));
-						$("#FSRdiv").append($("<h3>").text("Crop Name : "+response[index].cropName));
-						$("#FSRdiv").append($("<h3>").text("Crop Type : "+response[index].cropType));
-						$("#FSRdiv").append($("<h3>").text("Fertilizer Type : "+response[index].fertilizerType));
-						$("#FSRdiv").append($("<h3>").text("Soil PH Certificate : "+response[index].soilPhCertificate));
-						$("#FSRdiv").append($("<h3>").text("Status : "+status));
-						$("#FSRdiv").append($("<h3>").text("Date and Time of request upload : "+response[index].dateTime.dayOfMonth+"-"+response[index].dateTime.monthValue+"-"+response[index].dateTime.year+" "+response[index].dateTime.hour+":"+response[index].dateTime.minute+":"+response[index].dateTime.second));
-						$("#FSRdiv").append($("<h3>").text("Crop available on website for : "+response[index].duration));
-						$("#FSRdiv").append($("<h3>").text("Base Price : "+response[index].basePrice));
+						}
+						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+ response.sellRequestId));
+						$("#FSRdiv").append(
+								$("<h3>").text(
+										"Crop Name : "
+												+ response.cropName));
+						$("#FSRdiv").append(
+								$("<h3>").text(
+										"Crop Type : "
+												+ response.cropType));
+						$("#FSRdiv")
+								.append(
+										$("<h3>")
+												.text(
+														"Fertilizer Type : "
+																+ response.fertilizerType));
+						$("#FSRdiv")
+								.append(
+										$("<h3>")
+												.text(
+														"Soil PH Certificate : "
+																+ response.soilPhCertificate));
+						$("#FSRdiv").append(
+								$("<h3>").text("Status : " + status));
+						$("#FSRdiv")
+								.append(
+										$("<h3>")
+												.text(
+														"Date and Time of request upload : "
+																+ response.dateTime.dayOfMonth
+																+ "-"
+																+ response.dateTime.monthValue
+																+ "-"
+																+ response.dateTime.year
+																+ " "
+																+ response.dateTime.hour
+																+ ":"
+																+ response.dateTime.minute
+																+ ":"
+																+ response.dateTime.second));
+						$("#FSRdiv").append(
+								$("<h3>").text(
+										"Crop available on website for : "
+												+ response.duration+" days"));
+						$("#FSRdiv").append(
+								$("<h3>").text(
+										"Base Price : "
+												+ response.basePrice));
 					}
-			}
-		})
+
+				})
+	}
+
 	})
 </script>
 </head>
 <body>
-<form id="FSRForm-result">
-</form>
-<div id="FSRdiv"></div>
-<div id="FSRdivsample"></div>
+	<form id="FSRForm-result"></form>
+	<div id="FSRdiv"></div>
+	<div id="FSRdivsample"></div>
 </body>
 </html>
