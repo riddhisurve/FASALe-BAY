@@ -3,90 +3,64 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="home.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js">
 	
 </script>
 <script>
-	$(function() {
-		if(sessionStorage.getItem("fid")==null)
-		{
-		alert("You need to login first");
-		window.location.href = "login.html";
-		}
-	else{
-		var id = sessionStorage.getItem("fid");
-		var requestId = sessionStorage.getItem("sellRequestId");
-		$.ajax({
-					url : 'listAll.lti?id='+requestId,
-					method : 'GET',
-					//data : JSON.stringify(sessionStorage.getItem("sellRequestId")),
-					contentType : 'application/json',
-					success : function(response) {
-						alert(JSON.stringify(response));
-
-						if (response.status == 0) {
-							var status = "Unapproved by Admin";
-						} else if (response.status == 1) {
-							var status = "Approved by Admin";
-						}
-						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+ response.sellRequestId));
-						$("#FSRdiv").append(
-								$("<h3>").text(
-										"Crop Name : "
-												+ response.cropName));
-						$("#FSRdiv").append(
-								$("<h3>").text(
-										"Crop Type : "
-												+ response.cropType));
-						$("#FSRdiv")
-								.append(
-										$("<h3>")
-												.text(
-														"Fertilizer Type : "
-																+ response.fertilizerType));
-						$("#FSRdiv")
-								.append(
-										$("<h3>")
-												.text(
-														"Soil PH Certificate : "
-																+ response.soilPhCertificate));
-						$("#FSRdiv").append(
-								$("<h3>").text("Status : " + status));
-						$("#FSRdiv")
-								.append(
-										$("<h3>")
-												.text(
-														"Date and Time of request upload : "
-																+ response.dateTime.dayOfMonth
-																+ "-"
-																+ response.dateTime.monthValue
-																+ "-"
-																+ response.dateTime.year
-																+ " "
-																+ response.dateTime.hour
-																+ ":"
-																+ response.dateTime.minute
-																+ ":"
-																+ response.dateTime.second));
-						$("#FSRdiv").append(
-								$("<h3>").text(
-										"Crop available on website for : "
-												+ response.duration+" days"));
-						$("#FSRdiv").append(
-								$("<h3>").text(
-										"Base Price : "
-												+ response.basePrice));
-					}
-
-				})
-	}
-
+$(function() {
+	 if (sessionStorage.getItem("fid") == null) {
+	  alert("You need to login first");
+	  window.location.href = "login.html";
+	 } else {
+		 $("#logout").click(function(evt) {
+				alert("Hope to see you soon! ");
+				sessionStorage.removeItem("fid");
+				window.location.href = "login.html";
+			})
+			
+	  $.ajax({
+	     url : 'listAll.lti?id='+sessionStorage.sellRequestId,
+	     method : 'GET',
+	     contentType : 'application/json',
+	     success : function(response) {
+	      for(var crop of response){
+	       if (crop.status == 0) {
+	        var status = "Unapproved by Admin";
+	       } else if (crop.status == 1) {
+	        var status = "Approved by Admin";
+	       }
+	       
+	       $("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+ crop.sellRequestId));
+	       $("#FSRdiv").append($("<h3>").text("Crop Name : "+ crop.cropName));
+	       $("#FSRdiv").append($("<h3>").text("Crop Type : "+ crop.cropType));
+	       $("#FSRdiv").append($("<h3>").text("Fertilizer Type : "+ crop.fertilizerType));
+	       $("#FSRdiv").append($("<h3>").text("Soil PH Certificate : "+ crop.soilPhCertificate));
+	       $("#FSRdiv").append($("<h3>").text("Status : " + status));
+	       
+	       $("#FSRdiv").append($("<h3>").text("Crop available on website for : "+ crop.duration+ " days"));
+	       $("#FSRdiv").append($("<h3>").text("Base Price : "+ crop.basePrice));
+	      }
+	     }
+	    })
+	 }
 	})
 </script>
 </head>
 <body>
-	<form id="FSRForm-result"></form>
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
+
+	<section>
+		<div class="topnav">
+			<a href="farmerDashboard.html">Home</a> <a href="contact.html">Contact</a>
+			<a href="about.html">About</a> <a href="login.html" id="logout">Logout</a>
+		</div>
+
+	</section>
+
+
 	<div id="FSRdiv"></div>
-	<div id="FSRdivsample"></div>
 </body>
 </html>

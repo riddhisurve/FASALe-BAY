@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
+
+<meta charset="ISO-8859-1">
+<title>Approval Page</title>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+	$(function() {
+		if (sessionStorage.getItem("aid") == null) {
+			alert("You need to login first");
+			window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("Hope to see you soon!");
+				sessionStorage.removeItem("aid");
+				window.location.href = "login.html";
+			})
+
+		$("#reject").click(function()  {
+			var id = $("input[name='cropId']:checked").val();
+			$.ajax({
+				url : 'requestUnapproved.lti',
+				method : 'POST',
+				data : JSON.stringify(id),
+				contentType : 'application/json',
+				success : function(response) {
+					window.location.reload();
+				}
+			})
+			})
+			
+					$("#approve").click(function()  {
+					var id = $("input[name='cropId']:checked").val();
+			$.ajax({
+				url : 'requestApproved.lti',
+				method : 'POST',
+				data : JSON.stringify(id),
+				contentType : 'application/json',
+				success : function(response) {
+					window.location.reload();
+				}
+			})
+		})
+		$(document)
+				.ready(
+						function() {
+							$
+									.ajax({
+										url : "fetchAllFarmerSellRequest.lti",
+										type : "POST",
+										dataType : "JSON",
+										contentType : 'application/json',
+										success : function(response) {
+											var trHTML = ' ';
+											$
+													.each(
+															response,
+															function(key, value) {
+																trHTML += '<tr><td>'
+																		+ value.cropType
+																		+ '</td><td>'
+																		+ value.cropName
+																		+ '</td><td>'
+																		+ value.fertilizerType
+																		+ '</td><td>'
+																		+ value.farmerDetails.name
+																		+ '</td><td>'
+																		+ '<input type="radio" name= "cropId" value=" ' +value.sellRequestId+' " /> '
+																		+ '</td></tr>';
+															});
+
+											$('#records_table').append(trHTML);
+											
+										}
+									});
+						});
+		}
+	})
+</script>
+
+
+</head>
+
+
+
+<body>
+
+
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+
+<section>
+<div class="topnav">
+	<a href="adminDashboard.html">Home</a>
+	<a href="contact.html">Contact</a>
+	<a href="about.html">About</a>
+	<a	href="login.html" id="logout">Logout</a>
+</div>
+  
+</section>
+
+
+	<table id="records_table" border='1'>
+		<tr bgcolor="yellow">
+			<th align="center" >Crop Type</th>
+			<th align="center" >Crop Name</th>
+			<th align="center" >fertilizerType</th>
+			<th align="center" >Farmer Name</th>
+				<th align="center" >Select</th>
+		</tr>
+	</table>
+
+<form id="approveFrm">
+		<input type="button" value="Approve"  id="approve" >
+		<input type="button" value="Reject"  id="reject">
+	</form>
+
+
+</body>
+</html>

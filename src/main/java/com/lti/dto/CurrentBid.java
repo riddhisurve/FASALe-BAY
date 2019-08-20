@@ -5,6 +5,7 @@ public class CurrentBid {
 	private int cropId;
 	private double currentBid;
 	private int bidderId;
+	
 	public int getCropId() {
 		return cropId;
 	}

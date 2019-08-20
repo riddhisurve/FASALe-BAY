@@ -1,38 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="home.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-	$(function() {	
-		var fid = sessionStorage.fid;
-		$.ajax({
-			url : 'listHistory.lti?fid='+fid,
-			method : 'GET',
-			data : JSON.stringify(fid),
-			contentType : 'application/json',
-			success : function(response) {
-				alert(JSON.stringify(response));
-				for(var index in response)
-					{
-						
-						$("#FSRdiv").append($("<h3>").text("Crop Sell ID : "+response[index].sellRequestId));
-						$("#FSRdiv").append($("<h3>").text("Crop Name : "+response[index].cropName));
-						$("#FSRdiv").append($("<h3>").text("Crop Type : "+response[index].cropType));
-						$("#FSRdiv").append($("<h3>").text("Fertilizer Type : "+response[index].fertilizerType));
-						$("#FSRdiv").append($("<h3>").text("Soil PH Certificate : "+response[index].soilPhCertificate));
-						$("#FSRdiv").append($("<h3>").text("Status : "+status));
-						$("#FSRdiv").append($("<h3>").text("Date and Time of request upload : "+response[index].dateTime.dayOfMonth+"-"+response[index].dateTime.monthValue+"-"+response[index].dateTime.year+" "+response[index].dateTime.hour+":"+response[index].dateTime.minute+":"+response[index].dateTime.second));
-						$("#FSRdiv").append($("<h3>").text("Crop available on website for : "+response[index].duration));
-						$("#FSRdiv").append($("<h3>").text("Base Price : "+response[index].basePrice));
-					}
-			}
-		})
-	})
+
+		
+		
+		$(document).ready(
+				function() {
+					
+					if (sessionStorage.getItem("fid") == null) {
+						alert("You need to login first");
+						window.location.href = "login.html";
+						} else {
+							$("#logout").click(function(evt) {
+								alert("Hope to see you soon! ");
+								sessionStorage.removeItem("fid");
+								window.location.href = "login.html";
+							})
+							
+					var fid = sessionStorage.fid;
+					$.ajax({
+							url : 'listHistory.lti?fid='+fid,
+								type : "GET",
+								dataType : "json",
+								success : function(response) {
+								
+									var trHTML = ' ';
+									$
+											.each(
+													response,
+													function(key, value) {
+														trHTML += '<tr><td>'
+																+ value.sellRequestId
+																+ '</td><td>'
+																+ value.cropName
+																+ '</td><td>'
+																+ value.cropType
+																+ '</td><td>'
+																+ value.fertilizerType
+																+ '</td><td>'
+																+ value.soilPhCertificate
+																+ '</td><td>'
+																+ value.dateTime.dayOfMonth+"-"+value.dateTime.monthValue+"-"+value.dateTime.year
+																+ '</td><td>'
+																+ value.duration+"days"
+																+ '</td><td>'
+																+ value.basePrice
+																+ '</td><td>'
+																+ value.soldPrice
+																+ '</td></tr>';
+													});
+
+									$('#records_table').append(trHTML);
+								}
+							});
+						}
+				});
+	
 	</script>
 </head>
 <body>
+
+
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+
+<section>
+<div class="topnav">
+	<a href="farmerDashboard.html">Home</a>
+	<a href="contact.html">Contact</a>
+	<a href="about.html">About</a>
+		<a href="login.html" id="logout">Logout</a>
+</div>
+  
+</section>
+
+
+<table id="records_table" border='1'>
+		<tr bgcolor="yellow">
+			<th align="center" >Crop ID</th>
+			<th align="center" >Crop Name</th>
+			<th align="center" >Crop Type</th>
+			<th align="center" >Fertilizer Type</th>
+			<th align="center" >Soil Ph certificate</th>
+			<th align="center" >Application date</th>
+			<th align="center" >Duration of the crop</th>
+			<th align="center" >Base price</th>
+			<th align="center" >Sold price</th>
+		</tr>
+	</table>
 
 <div id="FSRdiv"></div>
 <div id="FSRdivsample"></div>

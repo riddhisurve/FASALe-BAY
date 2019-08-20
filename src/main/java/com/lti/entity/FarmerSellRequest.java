@@ -16,35 +16,55 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="TBL_FARMERSELLREQUEST")
+@Table(name = "TBL_FARMERSELLREQUEST")
 public class FarmerSellRequest {
 
 	@Id
 	@GeneratedValue
-	@Column(name="sell_request_id")
+	@Column(name = "sell_request_id")
 	private int sellRequestId;
+
 	
-	@Column(name="crop_type")
+	@Column(name = "crop_type")
 	private String cropType;
-	
-	@Column(name="crop_name")
+
+	@Column(name = "crop_name")
 	private String cropName;
-	
-	@Column(name="fertilizer_type")
+
+	@Column(name = "fertilizer_type")
 	private String fertilizerType;
 	private int quantity;
-	@Column(name="soil_ph_certificate")
+	@Column(name = "soil_ph_certificate")
 	private String soilPhCertificate;
 	private int status;
-	@Column(name="date_time")
-	private LocalDateTime dateTime=LocalDateTime.now();
-	
-	@Column(name="end_date_time")
+	@Column(name = "date_time")
+	private LocalDateTime dateTime = LocalDateTime.now();
+
+	@Column(name = "end_date_time")
 	private LocalDateTime endDateTime;
-	
+
 	private int sold = 0;
+
+	private int duration;
+
+	@Column(name = "base_price")
+	private double basePrice;
 	
+	@Column(name = "sold_price" )
+	private double soldPrice = 0;
 	
+
+	@Transient
+	private double maxBidAmount;
+
+	@ManyToOne
+	@JoinColumn(name = "farmer_Id")
+	private FarmerDetails farmerDetails;
+
+	@JsonIgnore
+	@OneToMany
+	private Set<BiddingDetails> biddingDetails;
+
 	public int getSold() {
 		return sold;
 	}
@@ -60,24 +80,6 @@ public class FarmerSellRequest {
 	public void setEndDateTime(LocalDateTime endDateTime) {
 		this.endDateTime = endDateTime;
 	}
-
-	private int duration;
-	
-	@Column(name="base_price")
-	private double basePrice;
-	
-	@Transient
-	private double maxBidAmount;
-
-	
-	
-	@ManyToOne
-	@JoinColumn(name="farmer_Id")
-	private FarmerDetails farmerDetails;
-	
-	@JsonIgnore
-	@OneToMany
-	private Set<BiddingDetails> biddingDetails;
 
 	public String getSoilPhCertificate() {
 		return soilPhCertificate;
@@ -135,8 +137,6 @@ public class FarmerSellRequest {
 		this.status = status;
 	}
 
-
-
 	public LocalDateTime getDateTime() {
 		return dateTime;
 	}
@@ -172,6 +172,15 @@ public class FarmerSellRequest {
 	public double getBasePrice() {
 		return basePrice;
 	}
+	
+
+	public double getSoldPrice() {
+		return soldPrice;
+	}
+
+	public void setSoldPrice(double soldPrice) {
+		this.soldPrice = soldPrice;
+	}
 
 	public void setBasePrice(double basePrice) {
 		this.basePrice = basePrice;
@@ -185,5 +194,4 @@ public class FarmerSellRequest {
 		this.maxBidAmount = maxBidAmount;
 	}
 
-	
 }

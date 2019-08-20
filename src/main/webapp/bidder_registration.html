@@ -3,8 +3,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.4.1.js">
-</script>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="login.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
 <script>
 $(function() {
 	$("#bidder_form").submit(function(evt) {
@@ -12,7 +17,7 @@ $(function() {
 		var obj = {
 				name : $('#name').val(),
 			    email : $('#email').val(),
-			    contactNumber : $('#contact_number').val(),
+			    contactNumber : $('#contactNumber').val(),
 			    password : $('#password').val(),
 			    address1:$('#address1').val(),
 			    address2:$('#address2').val(),
@@ -26,13 +31,16 @@ $(function() {
 			    certificate:$('#cert').val()			
 		}
 		
+		
 		$.ajax({
 			url : 'addBidder.lti',
 			method : 'POST',
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(response) {
-				alert(JSON.stringify(response));
+				alert("Registered successfully");
+				window.location.href="login.html";
+			
 			}
 		})
 	})
@@ -40,37 +48,59 @@ $(function() {
 </script>
 </head>
 <body>
-BIDDER REGISTRTION FORM
-<form id="bidder_form">
-	<p>Personal details</p>
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
 
-	Enter name :<input type="text" id="name" /><br /> 
-	Enter Email : <input type="email" id="email" /><br /> 
-	Enter Contact	Number : <input type="number" id="contact_number" /><br /> 
-	Enter Password : <input type="password" id="password" /><br /> 
-	Confirm Password : <input type="password" id="cpassword" /><br />
-	<p>Address Details</p>
-	<br /> Enter Address1: <input type="text" id="address1"	placeholder="address1" /><br /> 
-		Enter Address2: <input type="text"	id="address2" placeholder="address2" /><br /> 
-		Enter city: <input type="text" id="city" /><br /> 
-		Enter state: <input type="text"	id="state" /><br /> 
-		Enter pincode: <input type="number"	id="pincode" /><br />
+	<section>
+		<div class="topnav">
+			<a href="FasaleBay.html">Home</a> 
+			 <a href="contact.html">Contact</a> 
+			 <a href="about.html">About</a>
+
+		</div>
+
+		<article>
+			<h1  id="hiMsg"></h1>  
+			<div id="result"></div>
+
+			<form id="bidder_form">
+<center><strong>BIDDER REGISTRTION FORM</strong></center>
+	<hr><p><b>Personal details</b></p>
+
+	Enter name :<input type="text" id="name" required /><br /> 
+	Enter Email : <input type="email" id="email" required /><br /> 
+	Enter Contact Number : <input type="number" id="contactNumber" required /><br /> 
+	Enter Password : <input type="password" id="password" required/><br /> 
+	<!--  Confirm Password : <input type="password" id="cpassword" required/><br />-->
+	<hr><b><p>Address Details</p></b>
+	<br /> Enter Address1: <input type="text" id="address1"	placeholder="address1" required/><br /> 
+		Enter Address2: <input type="text"	id="address2" placeholder="address2" required/><br /> 
+		Enter city: <input type="text" id="city" required /><br /> 
+		Enter state: <input type="text"	id="state" required/><br /> 
+		Enter pincode: <input type="number"	id="pincode" required/><br />
 		
-	<p>Account details</p>
-	<br /> Enter Account number:<input type="number" id="accno" /><br />
-	Enter IFSC code: <input type="text" id="ifsc" /><br />
-	<p>DOcuments upload</p>
-	Enter adh code: <input type="text" id="adhar" /><br /> 
-	Enter pancode: <input type="text" id="pan" /><br /> 
-	Enter cert code: <input	type="text" id="cert" /><br />
+	<hr><b><p>Account details</p></b>
+	<br /> Enter Account number:<input type="number" id="accno" required /><br />
+	Enter IFSC code: <input type="text" id="ifsc" required /><br />
+	<hr><b><p>Documents details</p></b>
+	Aadharcard number: <input type="text" id="adhar" required /><br /> 
+	Pancard number: <input type="text" id="pan" required/><br /> 
+	Certificate: <input	type="text" id="cert" required /><br />
 	
 	<br /> <input type="submit" value="REGISTER" />
 </form>
 
+
+		</article>
+	</section>
+
+
+
+
+
 </body>
 </html>
 
 
 
-</body>
-</html>

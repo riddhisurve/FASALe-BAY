@@ -11,7 +11,6 @@ $(function(){
 			dataType : 'JSON',
 			contentType : 'application/json',
 			success : function(response) {
-		//	alert(JSON.stringify(response));
 				for(var crop of response){
 				$("#crop").append($("<h6>").text(crop.cropType));
 				$("#crop").append($("<h6>").text(crop.cropName));
@@ -33,7 +32,6 @@ $(function(){
 		})
 		$("#crop").on("click", ".unapprove-btn", function() {
 		var id = $(this).attr("data-cropid2");
-		//alert(JSON.stringify(id));
 		$.ajax({
 			url : 'requestUnapproved.lti',
 			method : 'POST',

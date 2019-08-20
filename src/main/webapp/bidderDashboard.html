@@ -3,25 +3,22 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Bidder Page</title>
-<link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
+<link rel="stylesheet" type="text/css" href="home.css">
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 <script>
 	$(function() {
-		alert(sessionStorage.getItem("bid"));
+		$('#hiMsg').append("Hi "+sessionStorage.name+",");
 		if (sessionStorage.getItem("bid") == null) {
 			alert("You need to login first");
 			window.location.href = "login.html";
 		} else {
 			$("#logout").click(function(evt) {
-				alert("clicked on logout hmmm");
-				alert(sessionStorage.getItem("bid"));
+				alert("Hope to see you soon!");
 				sessionStorage.removeItem("bid");
-				alert(sessionStorage.getItem("bid"));
 				window.location.href = "login.html";
 			})
-			//window.location.href = "login.html"
 		}
 
 	});
@@ -36,22 +33,13 @@
 <section>
 <div class="topnav">
 	<a href="FasaleBay.html">Home</a>
-	<a href="login.html">Login</a>
 	<a href="contact.html">Contact</a>
 	<a href="about.html">About</a>
 	<a href="login.html" id="logout">Logout</a>
 </div>
   <article>
   <div id="result"></div>
-  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <script>
-  $(function() {
-  
-	  alert(sessionStorage.bid);
-  
-  });
-  </script>
-    
+	<h1  id="hiMsg"></h1>    
     <a href = "BidderBidPage.html">View Market Place</a><br><br>
    
     

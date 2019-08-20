@@ -1,60 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-$(function() {
 
-	$("#btn").click(function() {
-
-		var id = $("#farmerId").val();
-		alert(JSON.stringify(id));
-	
-		$.ajax({
-			url : 'viewRequestStatus.lti',
-			method : 'POST',
-			data : JSON.stringify(id),
-			contentType : 'application/json',
-			success : function(response) {
-				alert(JSON.stringify(response));
-				
-				for(var crop of response){
-					$("#crop").append(crop.cropType);
-					$("#crop").append($("<h6>").text(crop.cropName));
-					if(crop.status==1)
-						{
-					$("#crop").append($("<h6>").text("Approved"));
-						}
-					else if(crop.status==-1)
-						{
-					$("#crop").append($("<h6>").text("Rejected"));
-						}
-					else{
-						$("#crop").append($("<h6>").text("Unapproved"));
-					}
-						}
-			}
+		$(document).ready(function() {
 			
-		})
-	})
+			if (sessionStorage.getItem("fid") == null) {
+				alert("You need to login first");
+				window.location.href = "login.html";
+				} else {
+					$("#logout").click(function(evt) {
+						alert("Hope to see you soon!");
+						sessionStorage.removeItem("fid");
+						window.location.href = "login.html";
+					})
 		
+					var state;
+					
+					var fid = sessionStorage.fid;
+					$.ajax({
+							url : 'viewRequestStatus.lti?fid='+fid,
+								type : "GET",
+								dataType : "json",
+								success : function(response) {
+									var trHTML = ' ';
+									$
+											.each(
+													response,
+													function(key, value) {
+														
+														if(value.status==1){
+															state="approved";
+														
+															}
+														else if(value.status==-1){
+														state="rejected";
+														}
+														else{
+														state="unapproved";
+														}
+													
+														trHTML += '<tr><td>'
+																+value.sellRequestId
+																+ '</td><td>'
+																+ value.cropType
+																+ '</td><td>'
+																+ value.cropName
+																+ '</td><td>'
+																+ state
+																+ '</td></tr>';
+													});
 
-		})
+									$('#records_table').append(trHTML);
+								}
+							});
+				}
+				});
 	
 
 </script>
 </head>
 <body>
 
-	
-	<form id="requestForm">
-		Enter Sell Request Id : <input type="number" id="farmerId" /> <input
-			type="button" value="SUBMIT" id="btn">
-	</form>
 
-<div id="crop"></div>
+
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+
+<section>
+<div class="topnav">
+	<a href="farmerDashboard.html">Home</a>
+	<a href="contact.html">Contact</a>
+	<a href="about.html">About</a>
+	<a href="login.html" id="logout">Logout</a>
+</div>
+  
+</section>
+
+	<table id="records_table" border='1'>
+	<tr>
+			<th align="center" >Request ID</th>
+			<th align="center" >Crop Type</th>
+			<th align="center" >Crop Name</th>
+			<th align="center" >Status</th>
+		</tr>
+	</table>
+
 </body>
 </html>

@@ -3,11 +3,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="login.css">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js">
-<script src="https://cdn.wideskyhosting.com/js/jquery.validate.js"></script>
 	
-</script>
 <script>
 	$(function() {
 		$("#farmer_form").submit(function(evt) {
@@ -15,7 +18,7 @@
 			var obj = {
 
 					name : $('#name').val(),
-					contactNumber : $('#contact_number').val(),
+					contactNumber : $('#contactNumber').val(),
 				    email : $('#email').val(),
 				    password : $('#password').val(),
 				    address1:$('#address1').val(),
@@ -28,18 +31,20 @@
 				    aadharcard:$('#adhar').val(),
 				    pancard:$('#pan').val(),
 				    certificate:$('#cert').val(),
-				    landArea:$('#land_area').val(),
-				    landAddress:$('#land_address').val(),
-				    landPin:$('#land_pincode').val()
+				    landArea:$('#landArea').val(),
+				    landAddress:$('#landAddress').val(),
+				    landPin:$('#landPincode').val()
 			}
+		    
+		    
 			$.ajax({
 				url : 'addFarmer.lti',
 				method : 'POST',
 				data : JSON.stringify(obj),
 				contentType : 'application/json',
 				success : function(response) {
-					alert(JSON.stringify(response)),
-					window.location.href = "farmer_registration.html";
+					alert("Registered successfully");
+					window.location.href = "login.html";
 				}
 			})
 		})
@@ -48,36 +53,56 @@
 
 </head>
 <body>
-	FARMER REGISTRTION FORM
-	<form id="farmer_form">
-		<p>Personal details</p>
+<header>
+		<h2>FASALe-BAY</h2>
+	</header>
 
-		Enter name :<input type="text" id="name" class="required" /><br /> 
-		Enter Contact	Number : <input type="number" id="contact_number" /><br /> 
-		Enter Email : <input type="email" id="email" /><br /> 
-		Enter Password : <input type="password" id="password" /><br /> 
-		Confirm Password : <input type="password" id="cpassword" /><br />
-		<p>Address Details</p>
-		<br /> Enter Address1: <input type="text" id="address1"	placeholder="address1" /><br /> 
-			Enter Address2: <input type="text"	id="address2" placeholder="address2" /><br /> 
-			Enter city: <input 	type="text" id="city" /><br /> 
-			Enter state: <input type="text"	id="state" /><br /> 
-			Enter pincode: <input type="number"	id="pincode" /><br />
-		<p>Land Details</p>
-		<br /> Enter area : <input type="number" id="land_area" /><br />
-		Enter Address: <input type="text" id="land_address" /><br /> 
-		Enter pincode: <input type="number" id="land_pincode" /><br />
+	<section>
+		<div class="topnav">
+			<a href="FasaleBay.html">Home</a>  
+			<a href="contact.html">Contact</a>
+			 <a href="about.html">About</a> 
 
-		<p>Account details</p>
-		<br /> Enter Account number:<input type="number" id="accno" /><br />
-		Enter IFSC code: <input type="text" id="ifsc" /><br />
-		<p>DOcuments upload</p>
-		Enter adh code: <input type="text" id="adhar" /><br /> 
-		Enter pancode: <input type="text" id="pan" /><br /> 
-		Enter cert code: <input	type="text" id="cert" /><br />
+		</div>
+
+		<article>
+			<form id="farmer_form">
+	<strong><center>FARMER REGISTRATION FORM</center></strong>
+		<hr><p><b>Personal details</b></p>
+
+		Enter Name :<input type="text" id="name" required /><br /> 
+		Enter Contact	Number : <input type="number" id="contactNumber" required /><br /> 
+		Enter Email : <input type="email" id="email" required/><br /> 
+		Enter Password : <input type="password" id="password" required/><br /> 
+		<hr><p><b>Address Details</b></p><br /> 
+		Enter Address1: <input type="text" id="address1" placeholder="address1" required/><br /> 
+			Enter Address2: <input type="text"	id="address2" placeholder="address2" required /><br /> 
+			Enter City: <input 	type="text" id="city" required/><br /> 
+			Enter State: <input type="text"	id="state" required/><br /> 
+			Enter Pincode: <input type="number"	id="pincode" required /><br />
+		<hr><p><b>Land Details</b></p>
+		<br /> Enter Area : <input type="number" id="landArea" required/><br />
+		Enter Address: <input type="text" id="landAddress" required/><br /> 
+		Enter Pincode: <input type="number" id="landPincode" required /><br />
+
+		<hr><p><b>Account details</b></p><br /> 
+		Enter Account number:<input type="number" id="accno" required/><br />
+		Enter IFSC code: <input type="text" id="ifsc" required/><br />
+		<hr><p><b>Documents details</b></p>
+		 Aadharcard number: <input type="text" id="adhar" required /><br /> 
+		Pancard number: <input type="text" id="pan" required/><br /> 
+		Certificate: <input	type="text" id="cert" required/><br />
 		
 		<br /> <input type="submit" value="REGISTER" />
 	</form>
+		</article>
+	</section>
+	
+
+
+
+	
+	
 
 </body>
 </html>

@@ -2,8 +2,13 @@
 <html>
 <head>
 <title>Login Page</title>
-<link rel="stylesheet" type="text/css" href="logincss.css">
+
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="login.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script>
 $(function() {
 	$("#loginFrm").submit(function(evt) {
@@ -13,6 +18,8 @@ $(function() {
 				password:$("#password").val(),
 				 role: $('.role').val()
 				}
+		 
+	
 		
 		$.ajax({
 			url : 'login.lti',
@@ -20,7 +27,6 @@ $(function() {
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(response) {
-				alert(JSON.stringify(response));
 				if(response.message=="Valid Farmer")
 					{
 					if(typeof (Storage)!=="undefined"){
@@ -28,8 +34,8 @@ $(function() {
 					       {
 					       }
 					      else{
-					       alert(response.generatedId);
 					       sessionStorage.fid=response.generatedId;
+					       sessionStorage.name=response.temp;
 					      }
 					     }
 					window.location.href="farmerDashboard.html"
@@ -42,8 +48,8 @@ $(function() {
 					   
 					       }
 					      else{
-					       alert(response.generatedId);
 					       sessionStorage.bid=response.generatedId;
+					       sessionStorage.name=response.temp;
 					      }
 					     }
 					window.location.href="bidderDashboard.html"
@@ -56,8 +62,8 @@ $(function() {
 					   
 					       }
 					      else{
-					       alert(response.generatedId);
 					       sessionStorage.aid=response.generatedId;
+					       sessionStorage.name=response.temp;
 					      }
 					     }
 				window.location.href="adminDashboard.html"
@@ -73,18 +79,35 @@ $(function() {
 </script>
 </head>
 <body>
+
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+
+<section>
+<div class="topnav">
+	<a href="FasaleBay.html">Home</a>
+	<a href="login.html">Login</a>
+	<a href="contact.html">Contact</a>
+	<a href="about.html">About</a>
+</div>
+  
+</section>
+
 <div id="main">
 <form id="loginFrm">
 	<div class="user-input-wrp">
 	<br/>
-	<input type="text" class="inputText" id="email" required/>
 	<span class="floating-label">Enter Email Id</span>
+	<input type="text" class="inputText" id="email" required/>
+	
 	</div>
 
 	<div class="user-input-wrp">
 	<br/>
-	<input type="text" class="inputText" id="password" required/>
 	<span class="floating-label">Enter Password</span>
+	<input type="password" class="inputText" id="password" required/>
+	
 	</div>
 	
 	<div class="user-input-wrp">
@@ -100,11 +123,16 @@ $(function() {
 	<div>
 	<input type="submit" value="Login" id="submit">
 	</div> 
-	New user?<br>
-	<a href="farmer_registration.html">Register as Farmer</a></br>
-	<a href="bidder_registration.html">Register as Bidder</a>
+	
+	<a href="forgetPassword.html">Forgot Password?</a>
+
+				<br><br/><center>New user?</center>
+				<input type="button" value="Register as Farmer" 
+				onclick="window.location.href='farmer_registration.html'" />
+				<input type="button" value="Register as Bidder" 
+				onclick="window.location.href='bidder_registration.html'" /><div id="error"></div>
  </form>
-<div id="error"></div>
+
 </div>
 
 

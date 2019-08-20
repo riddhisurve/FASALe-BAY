@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="home.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 $(function(){
-	//var id=1;
+
+	if (sessionStorage.getItem("fid") == null) {
+		alert("You need to login first");
+		window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("Hope to see you soon!");
+				sessionStorage.removeItem("fid");
+				window.location.href = "login.html";
+			})
+			
+			
 	var id= sessionStorage.getItem("fid");
-	alert(id);
 		$.ajax({
 			url :'approvedCropDetails.lti?id='+id,
 			method : 'GET',			
 			contentType : 'application/json',
 			success : function(response) {
-				alert(JSON.stringify(response));
 				for(var crop of response){
 				$("#details").append($("<h4>").text("Crop Type : "+crop.cropType));
 				$("#details").append($("<h4>").text("Crop Name : "+crop.cropName));
 				$("#details").append($("<h4>").text("Base Price : "+crop.basePrice));
 				$("#details").append($("<h4>").text("Current Bid : "+crop.maxBidAmount));
-				//$("#details").append($("<h4>").text(""+crop.fertilizerType));
 				
 				var btn = $("<button />");
 				$("#details").append(btn);
@@ -28,7 +37,6 @@ $(function(){
 				btn.text("Stop Bidding");
 				
 				$("#details").append($("<hr>"));
-				//alert(JSON.stringify(response));
 				}
 			}
 		})
@@ -46,11 +54,25 @@ $(function(){
 			}
 		})
 	})
-		
+		}	
 	})
 </script>
 </head>
 <body>
+
+
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
+
+	<section>
+		<div class="topnav">
+			<a href="farmerDashboard.html">Home</a> <a href="contact.html">Contact</a>
+			<a href="about.html">About</a> <a href="login.html" id="logout">Logout</a>
+		</div>
+
+	</section>
+
 
 	<div id="details"></div>
 

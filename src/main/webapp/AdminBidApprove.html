@@ -1,80 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
 <meta charset="ISO-8859-1">
 <title>Approval Page</title>
 
-<style>
-table {
-	border: 3px solid blue;
-	width: 100%;
-}
-
-td{
-text-align: center;
-}
-</style>
 
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 	$(function() {
 
-		$("input[type='submit']").click(function() {
-			
-			var id = $("input[name='cropId']:checked").val();
-			//var id = $(this).attr("input[name='cropId']:checked");
-			//alert(JSON.stringify(id));
-		
-			$.ajax({
-
-				url : 'updateBidApproval.lti',
-				method : 'POST',
-				data : JSON.stringify(id),
-				contentType : 'application/json',
-				success : function(response) {
-					alert(JSON.stringify(response))
-					window.location.reload();
-				}
-
+		if (sessionStorage.getItem("aid") == null) {
+			alert("You need to login first");
+			window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("Hope to see you soon!");
+				sessionStorage.removeItem("aid");
+				window.location.href = "login.html";
 			})
-		})
+			$("input[type='submit']").click(function() {
 
-		$(document)
-				.ready(
-						function() {
-							$
-									.ajax({
-										url : "bidPage.lti",
-										type : "GET",
-										dataType : "json",
-										success : function(response) {
-											//window.location.reload();
-											var trHTML = ' ';
-											$
-													.each(
-															response,
-															function(key, value) {
-																trHTML += '<tr><td>'
-																		+ value.sellRequestId
-																		+ '</td><td>'
-																		+ value.cropName
-																		+ '</td><td>'
-																		+ value.cropType
-																		+ '</td><td>'
-																		+ value.basePrice
-																		+ '</td><td>'
-																		+ value.maxBidAmount
-																		+ '</td><td>'
-																		+ '<input type="radio" name= "cropId" value=" ' +value.sellRequestId+' " /> '
-																		+ '</td></tr>';
-															});
+				var id = $("input[name='cropId']:checked").val();
+				$.ajax({
 
-											$('#records_table').append(trHTML);
-											
-										}
-									});
-						});
+					url : 'updateBidApproval.lti',
+					method : 'POST',
+					data : JSON.stringify(id),
+					contentType : 'application/json',
+					success : function(response) {
+						window.location.reload();
+					}
+				})
+			})
 
+			$(document)
+					.ready(
+							function() {
+								$
+										.ajax({
+											url : "bidApprovePage.lti",
+											type : "GET",
+											dataType : "json",
+											success : function(response) {
+												
+												var trHTML = ' ';
+												$
+														.each(
+																response,
+																function(key,
+																		value) {
+																	trHTML += '<tr><td>'
+																			+ value.sellRequestId
+																			+ '</td><td>'
+																			+ value.cropName
+																			+ '</td><td>'
+																			+ value.cropType
+																			+ '</td><td>'
+																			+ value.basePrice
+																			+ '</td><td>'
+																			+ value.maxBidAmount
+																			+ '</td><td>'
+																			+ '<input type="radio" name= "cropId" value=" ' +value.sellRequestId+' " /> '
+																			+ '</td></tr>';
+																});
+
+												$('#records_table').append(
+														trHTML);
+
+											}
+										});
+							});
+		}
 	})
 </script>
 
@@ -84,20 +82,30 @@ text-align: center;
 
 
 <body>
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
+
+	<section>
+		<div class="topnav">
+			<a href="adminDashboard.html">Home</a> <a href="contact.html">Contact</a>
+			<a href="about.html">About</a> <a href="login.html" id="logout">Logout</a>
+		</div>
+	</section>
 
 	<table id="records_table" border='1'>
-		<tr bgcolor="yellow">
-			<th align="center" >Crop ID</th>
-			<th align="center" >Crop Name</th>
-			<th align="center" >Crop Type</th>
-			<th align="center" >Base Price</th>
-			<th align="center" >Current Bid</th>
-			<th align="center" >Action</th>
+		<tr>
+			<th align="center">Crop ID</th>
+			<th align="center">Crop Name</th>
+			<th align="center">Crop Type</th>
+			<th align="center">Base Price</th>
+			<th align="center">Current Bid</th>
+			<th align="center">Action</th>
 		</tr>
 	</table>
 
-<form id="approveFrm">
-		<input type="submit" value="Approve" >
+	<form id="approveFrm">
+		<input type="submit" value="Approve">
 	</form>
 
 

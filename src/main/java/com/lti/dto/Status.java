@@ -4,6 +4,8 @@ public class Status {
 
 	String message;
 	int generatedId;
+	private String temp;
+	
 	public String getMessage() {
 		return message;
 	}
@@ -15,6 +17,12 @@ public class Status {
 	}
 	public void setGeneratedId(int generatedId) {
 		this.generatedId = generatedId;
+	}
+	public String getTemp() {
+		return temp;
+	}
+	public void setTemp(String temp) {
+		this.temp = temp;
 	}
 	
 }

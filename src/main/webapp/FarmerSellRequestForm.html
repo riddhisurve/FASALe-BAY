@@ -3,31 +3,43 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="login.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <script>
 	$(function() {
-		alert(sessionStorage.getItem("fid"));
+	
 		if (sessionStorage.getItem("fid") == null) {
-		alert("You need to login first");
-		window.location.href = "login.html";
-		} else {
+			alert("You need to login first");
+			window.location.href = "login.html";
+			} else {
+				$("#logout").click(function(evt) {
+					alert("Hope to see you soon! ");
+					sessionStorage.removeItem("fid");
+					window.location.href = "login.html";
+				})
+				
 		$("#fsr-form")
 				.submit(
 						function(evt) {
 							evt.preventDefault();
 							var obj = {
-								cropName : $("#crop-name").val(),
-								cropType : $("#crop-type").val(),
-								fertilizerType : $("#fertilizer-type").val(),
+								cropName : $("#cropName").val(),
+								cropType : $("[name=cropType]:checked").val(),
+								fertilizerType : $("[name=fertilizerType]:checked").val(),
 								quantity : $("#quantity").val(),
 								soilPhCertificate : $(
-										"#soil-ph-certificate").val(),
+										"#soilPhCertificate").val(),
 								duration : $("#duration").val(),
 								status : 0,
 								basePrice : $("#basePrice").val()
 							};
+
+							
 							var farmerId = sessionStorage.getItem("fid");
 							$
 									.ajax({
@@ -37,7 +49,6 @@
 										contentType : 'application/json',
 										success : function(response) {
 											sessionStorage.sellRequestId = response.generatedId;
-											alert(JSON.stringify(response));
 											$
 													.ajax({
 														url : 'setFarmerIDToFSR.lti',
@@ -55,8 +66,8 @@
 									});
 						})
 		}
-
 	})
+	
 </script>
 
 </head>
@@ -69,9 +80,10 @@
 
 	<section>
 		<div class="topnav">
-			<a href="FasaleBay.html">Home</a> <a href="login.html">Login</a> <a
-				href="contact.html">Contact</a> <a href="about.html">About</a> <a
-				href="login.html" id="logout">Logout</a>
+			<a href="farmerDashboard.html">Home</a>  
+			<a href="contact.html">Contact</a>
+			 <a href="about.html">About</a> 
+			 <a href="login.html" id="logout">Logout</a>
 
 		</div>
 
@@ -79,44 +91,49 @@
 			<div id="result"></div>
 			<h2>Farmer Sell Request Form</h2>
 			<form id="fsr-form">
+				<div >
+					<label for="crop-name">Crop Name </label>
+					<input type="text" id="cropName" name="crop-name" required></input>
+				</div><br/>				
+				<div id="cropType">
+              Select Crop Type:
+              <input type="radio" id="rabi" name="cropType" value="rabi" checked>
+				  <label for="rabi">Rabi</label>
+				  <input type="radio" id="kharif" name="cropType" value="kharif">
+				  <label for="kharif">Kharif</label>
+				</div><br/>
+
+				<div id="fertilizerType">
+					Select Fertilizer Type:
+              <input type="radio" id="organic" name="fertilizerType" value="organic" checked>
+				  <label for="organic">Organic</label>
+				  <input type="radio" id="inorganic" name="fertilizerType" value="inorganic">
+				  <label for="inorganic">Inorganic</label>
+				</div>
+				
 				<div>
-					<label for="crop-name">Crop Name </label> <input type="text"
-						id="crop-name" name="crop-name"></input>
+					<label for="quantity">Quantity<span>(in kg)</span></label> 
+					<input type="text" id="quantity" name="quantity" required></input>
 				</div>
 				<div>
-					<label for="crop-type">Crop Type </label> <input type="text"
-						id="crop-type" name="crop-type"></input>
+					<label for="basePrice">Base Price</label> 
+					<input type="number" id="basePrice" name="basePrice" required></input>
 				</div>
 				<div>
-					<label for="fertilizer-type">Fertilizer Type</label> <input
-						type="text" id="fertilizer-type" name="fertilizer-type"></input>
+					<label for="soil-ph-certificate">Land soil pH Certificate No.</label>
+					 <input type="text" id="soilPhCertificate" name="soil-ph-certificate" required></input>
 				</div>
 				<div>
-					<label for="quantity">Quantity<span>(in kg)</span></label> <input
-						type="text" id="quantity" name="quantity"></input>
-				</div>
-				<div>
-					<label for="basePrice">Base Price</label> <input type="number"
-						id="basePrice" name="basePrice"></input>
-				</div>
-				<div>
-					<div>
-						<label for="soil-ph-certificate">Soil pH Certificate</label> <input
-							type="text" id="soil-ph-certificate" name="soil-ph-certificate"></input>
+					<label for="duration">Duration (in days)</label>
+					 <input type="text" id="duration" name="duration" required></input>
 					</div>
 					<div>
-						<label for="duration">Upload duration</label> <input type="text"
-							id="duration" name="duration"></input>
-					</div>
-					<div>
-						<input type="submit" value="PLACE REQUEST" />
+						<input type="submit" value="PLACE REQUEST"  />
 					</div>
 					<div id="msg"></div>
 		</article>
 	</section>
-	<footer>
-		<p>Footer</p>
-	</footer>
+	
 
 
 </body>

@@ -23,7 +23,7 @@ public class BidderDetails {
 	
 	private String name;
 	@Column(name="contact_number")
-	private int contactNumber;
+	private long contactNumber;
 	private String email;
 	private String password;
 	private String address1;
@@ -32,7 +32,7 @@ public class BidderDetails {
 	private String state;
 	private int pincode;
 	@Column(name="account_number")
-	private int accountNumber;
+	private long accountNumber;
 	private String ifsc;
 	private String aadharcard;
 	private String pancard;
@@ -59,13 +59,7 @@ public class BidderDetails {
 		this.name = name;
 	}
 
-	public int getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(int contactNumber) {
-		this.contactNumber = contactNumber;
-	}
+	
 
 	public String getEmail() {
 		return email;
@@ -123,11 +117,21 @@ public class BidderDetails {
 		this.pincode = pincode;
 	}
 
-	public int getAccountNumber() {
+	
+
+	public long getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(long contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(int accountNumber) {
+	public void setAccountNumber(long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 

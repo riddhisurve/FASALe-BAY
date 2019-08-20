@@ -3,21 +3,19 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Welcome to FASALe-BAY</title>
-<link rel="stylesheet" type="text/css" href="FasaleBayCSS.css">
+<link rel="stylesheet" type="text/css" href="home.css">
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 	$(function() {
-		alert(sessionStorage.getItem("fid"));
+		$('#hiMsg').append("Hi "+sessionStorage.name+",");
 		if (sessionStorage.getItem("fid") == null) {
 			alert("You need to login first");
 			window.location.href = "login.html";
 		} else {
 			$("#logout").click(function(evt) {
-				alert("clicked on logout hmmm");
-				alert(sessionStorage.getItem("fid"));
+				alert("Hope to see you soon");
 				sessionStorage.removeItem("fid");
-				alert(sessionStorage.getItem("fid"));
 				window.location.href = "login.html";
 			})
 		}
@@ -33,24 +31,26 @@
 
 	<section>
 		<div class="topnav">
-			<a href="FasaleBay.html">Home</a> <a href="login.html">Login</a> <a
-				href="contact.html">Contact</a> <a href="about.html">About</a> <a
-				href="login.html" id="logout">Logout</a>
+			<a href="FasaleBay.html">Home</a> 
+			 <a href="contact.html">Contact</a> 
+			 <a href="about.html">About</a>
+			  <a	href="login.html" id="logout">Logout</a>
 
 		</div>
 
 		<article>
+			<h1  id="hiMsg"></h1>  
 			<div id="result"></div>
 
-			<a href="FarmerSellRequestForm.html">Place crop sell request</a></br> </br> <a
-				href="ViewMarketplace.html">View Marketplace</a></br> </br> <a
-				href="DisplayAllBidderDetails.html">Crop sell status</a></br>
+			<a href="FarmerSellRequestForm.html">Place crop sell request</a><br> <br> <a
+				href="ViewMarketplace.html">View Marketplace</a><br> <br> <a
+				href="FarmerRequestStatus.html">Crop sell status</a><br>
+			<br> <a href="FarmerSoldHistory.html">View sold crop history</a>
+
 
 		</article>
 	</section>
-	<footer>
-		<p>Footer</p>
-	</footer>
+
 
 </body>
 </html>

@@ -3,44 +3,45 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style>
-table {
-	border: 3px solid blue;
-	width: 100%;
-}
-
-#bidFrm {
-	text-align: left;
-	margin-top: 75px;
-}
-</style>
-
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
+<link rel="stylesheet" type="text/css" href="login.css">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
 	$(function() {
 
-		$("input[type='submit']").click(function() {
-
-			var obj = {
-				cropId : $("input[name='cropId']:checked").val(),
-				currentBid : $("#currentBid").val(),
-				bidderId :sessionStorage.bid
-
-			}
-//alert(JSON.stringify(bidderId));
-			$.ajax({
-
-				url : 'updateCurrentBid.lti',
-				method : 'POST',
-				data : JSON.stringify(obj),
-				contentType : 'application/json',
-				success : function(response) {
-					alert(JSON.stringify(response))
-					window.location.reload();
-				}
-
+		if (sessionStorage.getItem("bid") == null) {
+			alert("You need to login first");
+			window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("Hope to see you soon!");
+				sessionStorage.removeItem("bid");
+				window.location.href = "login.html";
 			})
-		})
+
+			$("input[type='submit']").click(function() {
+
+				var obj = {
+					cropId : $("input[name='cropId']:checked").val(),
+					currentBid : $("#currentBid").val(),
+					bidderId : sessionStorage.bid
+
+				}
+				$.ajax({
+
+					url : 'updateCurrentBid.lti',
+					method : 'POST',
+					data : JSON.stringify(obj),
+					contentType : 'application/json',
+					success : function(response) {
+						alert(JSON.stringify(response))
+						window.location.reload();
+					}
+
+				})
+			})
+		}
 
 		$(document)
 				.ready(
@@ -80,19 +81,36 @@ table {
 </script>
 
 </head>
-<body bgcolor="white">
+<body>
+
+	<header>
+		<h2>FASALe-BAY</h2>
+	</header>
+
+	<section>
+		<div class="topnav">
+			<a href="bidderDashboard.html">Home</a> <a href="contact.html">Contact</a>
+			<a href="about.html">About</a> <a href="login.html" id="logout">Logout</a>
+		</div>
+
+	</section>
+
+
 	<table id="records_table" border='1'>
 		<tr bgcolor="yellow">
-			<th align="center" >Crop ID</th>
-			<th align="center" >Crop Name</th>
-			<th align="center" >Crop Type</th>
-			<th align="center" >Base Price</th>
-			<th align="center" >Current Bid</th>
-			<th align="center" >Select</th>
+			<th align="center">Crop ID</th>
+			<th align="center">Crop Name</th>
+			<th align="center">Crop Type</th>
+			<th align="center">Base Price</th>
+			<th align="center">Current Bid</th>
+			<th align="center">Select</th>
 		</tr>
 	</table>
 	<form id="bidFrm">
-		Bid Amount : <input type="number" id="currentBid" /> <input
+		<br>
+		<br> <strong>Kindly bid more than the current bid amount
+			to win!</strong> <br>
+		<br>Bid Amount : <input type="number" id="currentBid" /> <input
 			type="submit" value="BID">
 	</form>
 

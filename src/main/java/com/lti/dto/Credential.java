@@ -3,8 +3,15 @@ package com.lti.dto;
 public class Credential {
 
 	private String email;
-	private String password;
+	private String  password;
 	private String role;
+	private String aadhar;
+	public String getAadhar() {
+		return aadhar;
+	}
+	public void setAadhar(String aadhar) {
+		this.aadhar = aadhar;
+	}
 	public String getRole() {
 		return role;
 	}

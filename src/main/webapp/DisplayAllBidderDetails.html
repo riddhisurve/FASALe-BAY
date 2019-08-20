@@ -3,22 +3,25 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style>
-table {
-	border: 3px ;
-	width: 100%;
-}
+<link rel="stylesheet" type="text/css" href="home.css">
+<link rel="stylesheet" type="text/css" href="table.css">
 
-#detailsForm {
-	text-align: left;
-	margin-top: 75px;
-}
-</style>
 <script src="https://code.jquery.com/jquery-3.4.1.js">
 	
 </script>
 <script>
 	$(function() {
+		
+		if (sessionStorage.getItem("aid") == null) {
+			alert("You need to login first");
+			window.location.href = "login.html";
+		} else {
+			$("#logout").click(function(evt) {
+				alert("Hope to see you soon");
+				sessionStorage.removeItem("aid");
+				window.location.href = "login.html";
+			})
+		
 		$.ajax({
 
 			url : 'displayAllBidderDetails.lti',
@@ -45,12 +48,29 @@ table {
 				
 				}
 			});
+		}
 		});
 
 		
 </script>	
 </head>
-<body bgcolor="white">
+<body >
+
+<header>
+  <h2>FASALe-BAY</h2>
+</header>
+
+<section>
+<div class="topnav">
+	<a href="adminDashboard.html">Home</a>
+	<a href="contact.html">Contact</a>
+	<a href="about.html">About</a>
+		<a	href="login.html" id="logout">Logout</a>
+</div>
+  
+</section>
+
+
 	<table id="records_table" border='1'>
 		<tr>
 			<th align="center" >Bidder Name</th>
